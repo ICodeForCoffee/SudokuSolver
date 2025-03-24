@@ -19,11 +19,11 @@ def main():
     if args.display or 1 == 1:
         print("Run the display")
         instance.populate_possible_values(puzzle)
-        #trying to foce a copy for display first.
+        #ToDo trying to foce a copy for display first.
         puzzle2 = copy.deepcopy(puzzle)
         visualizer.display_puzzle_to_website(puzzle2)
     
-    #Code below will have to change to work with the display
+    #ToDo Code below will have to change to work with the display
     instance.display_puzzle_to_console(puzzle)
     
     start_time = time.time()

@@ -184,3 +184,28 @@ def test_load_function():
                 assert int(puzzle.squares[x][y]['value']) == matrix[x][y]
             else:
                 assert puzzle.squares[x][y]['value'] == matrix[x][y]
+                
+
+def test_load_function_initial_value():
+    puzzle = SudokuPuzzle()
+    instance = SudokuSolver()
+    
+    puzzle = instance.load_puzzle("SudokuPuzzles\\sudoku-puzzle1.txt")
+    
+    # This is the same Matrix from sudoku-puzzle1.txt
+    matrix = [
+        [' ',' ', 2 , 7 ,' ',' ', 1 , 5 , 6 ],
+        [' ', 3 ,' ', 6 , 2 , 8 ,' ', 4 ,' '],
+        [ 7 , 6 , 9 ,' ',' ',' ',' ', 3 ,' '],
+        [ 9 ,' ', 7 ,' ', 4 , 5 , 3 ,' ',' '],
+        [' ',' ',' ',' ', 8 ,' ', 7 , 2 ,' '],
+        [ 6 , 2 ,' ', 3 ,' ',' ', 5 ,' ',' '],
+        [' ', 5 ,' ', 1 ,' ', 3 ,' ',' ', 9 ],
+        [' ', 7 ,' ',' ', 9 ,' ', 2 ,' ', 5 ],
+        [ 4 ,' ', 1 , 5 , 7 ,' ',' ',' ',' ']
+    ]
+    
+    assert puzzle.squares[0][0]['initial_value'] == False
+    assert puzzle.squares[0][1]['initial_value'] == False
+    assert puzzle.squares[0][2]['initial_value'] == True
+    assert puzzle.squares[1][1]['initial_value'] == True

@@ -6,18 +6,15 @@ import copy
 STYLE = """
 <style>
 .possibleValuesCell {
-    outline: 1px dotted gray;
     width: 33.33%;
     height: 33.33%;
     text-align: center;
+    color: gray;
 }
 
 .puzzleCell {
-    border: 1px solid black;
-    padding: 0x;
-}
-
-.puzzleCell {
+    border: 2px solid black;
+    padding: 0px;
     width: 80px;
     height: 80px;
 }
@@ -40,57 +37,55 @@ STYLE = """
 }
 
 .initialValueCell {
-    background-color: gray;
+    background-color: gainsboro;
 }
 
 .cell-00, .cell-10, .cell-20, .cell-30, .cell-40, .cell-50, .cell-60, .cell-70, .cell-80, 
 .cell-03, .cell-13, .cell-23, .cell-33, .cell-43, .cell-53, .cell-63, .cell-73, .cell-83,
 .cell-06, .cell-16, .cell-26, .cell-36, .cell-46, .cell-56, .cell-66, .cell-76, .cell-86 {
-    border-left: 3px solid black;
+    border-left: 5px solid black;
 }
 
 .cell-08, .cell-18, .cell-28, .cell-38, .cell-48, .cell-58, .cell-68, .cell-78, .cell-88 {
-    border-right: 3px solid black;
+    border-right: 5px solid black;
 }
 
 .cell-00, .cell-01, .cell-02, .cell-03, .cell-04, .cell-05, .cell-06, .cell-07, .cell-08,
 .cell-30, .cell-31, .cell-32, .cell-33, .cell-34, .cell-35, .cell-36, .cell-37, .cell-38,
 .cell-60, .cell-61, .cell-62, .cell-63, .cell-64, .cell-65, .cell-66, .cell-67, .cell-68
 {
-    border-top: 3px solid black;
+    border-top: 5px solid black;
 }
 
 .cell-80, .cell-81, .cell-82, .cell-83, .cell-84, .cell-85, .cell-86, .cell-87, .cell-88
 {
-    border-bottom: 3px solid black;
+    border-bottom: 5px solid black;
 }
 </style>
 """
 
 FOUND_CELL = """
-<table class="valueCellContainer">
-    <tr>
-        <td class="valueCell">xyz</td>
-    </tr>
-</table>
+<div class="valueCellContainer">
+    <div class="valueCell">xyz</div>
+</div>
 """
 
 POSSIBLE_VALUES = """
 <table class="possibleValues">
 <tr>
-    <td class="possibleValuesCell" data-fakeId="y1">x1</td>
-    <td class="possibleValuesCell" data-fakeId="y2">x2</td>
-    <td class="possibleValuesCell" data-fakeId="y3">x3</td>
+    <td class="possibleValuesCell">x1</td>
+    <td class="possibleValuesCell">x2</td>
+    <td class="possibleValuesCell">x3</td>
 </tr>
 <tr>
-    <td class="possibleValuesCell" data-fakeId="y4">x4</td>
-    <td class="possibleValuesCell" data-fakeId="y5">x5</td>
-    <td class="possibleValuesCell" data-fakeId="y6">x6</td>
+    <td class="possibleValuesCell">x4</td>
+    <td class="possibleValuesCell">x5</td>
+    <td class="possibleValuesCell">x6</td>
 </tr>
 <tr>
-    <td class="possibleValuesCell" data-fakeId="y7">x7</td>
-    <td class="possibleValuesCell" data-fakeId="y8">x8</td>
-    <td class="possibleValuesCell" data-fakeId="y9">x9</td>
+    <td class="possibleValuesCell">x7</td>
+    <td class="possibleValuesCell">x8</td>
+    <td class="possibleValuesCell">x9</td>
 </tr>
 </table>
 """
@@ -230,13 +225,17 @@ class SudokuVisualizer:
                     html_fragment = self.generate_possible_values_html(possible_values)
                 else:
                     found_value = puzzle.squares[x][y]['value']
-                    found_cell = copy.deepcopy(FOUND_CELL)
-                    html_fragment = found_cell.replace("xyz", str(found_value))
+                    html_fragment = copy.deepcopy(FOUND_CELL)
                     
+                    if puzzle.squares[x][y]['initial_value'] == True:
+                        html_fragment = html_fragment.replace('"valueCell"', '"valueCell initialValueCell"')
+                        pass
+                    
+                    html_fragment = html_fragment.replace("xyz", str(found_value))
                     
                 sudoku_rendering = sudoku_rendering.replace(cell, html_fragment)
         
-        #not sure yet if this method will render or just generate the code
+        #Todo: Not sure yet if this method will render or just generate the code
         ui.html(sudoku_rendering)
 
     #this method will have to go at some point if this is to be unit tested.

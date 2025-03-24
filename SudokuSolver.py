@@ -17,6 +17,10 @@ class SudokuSolver:
 
             for y in range(9):
                 puzzle.squares[x][y]['value'] = line[y]
+                if line[y] == ' ':
+                    puzzle.squares[x][y]['initial_value'] = False
+                else:
+                    puzzle.squares[x][y]['initial_value'] = True
 
         return puzzle
 
