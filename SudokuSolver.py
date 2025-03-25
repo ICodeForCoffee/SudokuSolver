@@ -1,9 +1,13 @@
 from SudokuPuzzle import SudokuPuzzle
+from SudokuVisualizer import SudokuVisualizer
 import copy
 
 class SudokuSolver:
-    def __init__(self):
-        pass
+    def __init__(self, log_steps=False):
+        self.log_steps = log_steps
+        self.steps = []
+        if log_steps == True:
+            self.visualizer = SudokuVisualizer()
 
     def load_puzzle(self, file_name):
         file = open(file_name, "r")
@@ -22,6 +26,10 @@ class SudokuSolver:
                 else:
                     puzzle.squares[x][y]['initial_value'] = True
 
+        if self.log_steps == True:
+            self.populate_possible_values(puzzle)
+            self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+        
         return puzzle
 
     def display_puzzle_to_console(self, puzzle):
@@ -343,6 +351,10 @@ class SudokuSolver:
 
             puzzle2.squares[x][y]['value'] = possible_value
             self.populate_possible_values(puzzle2)
+            
+            if self.log_steps == True:
+                self.steps.append(self.visualizer.generate_sudoku_render(puzzle2))
+            
             self.prune_possibilities(puzzle2)
 
             puzzle2 = self.solve_puzzle(puzzle2)
@@ -371,5 +383,9 @@ class SudokuSolver:
                 if len(puzzle.squares[x][y]['possible_values']) == 1:
                     puzzle.squares[x][y]['value'] = puzzle.squares[x][y]['possible_values'][0]
                     promotions += 1
+                    
+                    if self.log_steps == True:
+                        self.populate_possible_values(puzzle)
+                        self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
 
         return promotions

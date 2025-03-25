@@ -11,7 +11,11 @@ def main():
     #parser.add_argument("-v", "--verbose", help="Display all debug code", action="store_true", required=False)
     args = parser.parse_args()
     
-    instance = SudokuSolver()
+    log_steps = False
+    if args.display or 1 == 1:
+        log_steps = True
+        
+    instance = SudokuSolver(log_steps=log_steps)
     visualizer = SudokuVisualizer()
     puzzle = instance.load_puzzle(args.file)
     

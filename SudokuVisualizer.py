@@ -235,8 +235,8 @@ class SudokuVisualizer:
                     
                 sudoku_rendering = sudoku_rendering.replace(cell, html_fragment)
         
-        #Todo: Not sure yet if this method will render or just generate the code
-        ui.html(sudoku_rendering)
+        
+        return sudoku_rendering
 
     #this method will have to go at some point if this is to be unit tested.
     def display_puzzle_to_website(self, puzzle):
@@ -247,7 +247,8 @@ class SudokuVisualizer:
         ui.html(STYLE)
         ui.label('Hello NiceGUI!')
         
-        self.generate_sudoku_render(puzzle)
+        sudoku_rendering = self.generate_sudoku_render(puzzle)
+        ui.html(sudoku_rendering)
         
         ui.button('Solve Puzzle', on_click=lambda: ui.notify('button was pressed'))
         #ui.table()

@@ -3,7 +3,6 @@ class SudokuPuzzle:
         self.squares = [ [{'value': "", 'possible_values': [], 'initial_value:': ""} for x in range(9)] for y in range(9)]
         self.guessing_used = False
         self.analysis_helped = False
-        self.steps = []
 
     # def is_valid(self):
     # Add a method to check if the puzzle status is valid
