@@ -20,13 +20,7 @@ def main():
     puzzle = instance.load_puzzle(args.file)
     
     print("Initial puzzle\n")
-    if args.display or 1 == 1:
-        print("Run the display")
-        instance.populate_possible_values(puzzle)
-        #ToDo trying to foce a copy for display first.
-        puzzle2 = copy.deepcopy(puzzle)
-        visualizer.display_puzzle_to_website(puzzle2)
-    
+
     #ToDo Code below will have to change to work with the display
     instance.display_puzzle_to_console(puzzle)
     
@@ -49,5 +43,11 @@ def main():
         print()
         print(f"The solving method took {time_elapsed:.5f} seconds.")
     print()
+    
+    if args.display or 1 == 1:
+        print("Run the display")
+        instance.populate_possible_values(puzzle)
+        visualizer.render_gui(instance.steps)
+    
 
 main()

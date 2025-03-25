@@ -1,6 +1,7 @@
 from nicegui import app, ui
 from SudokuPuzzle import SudokuPuzzle
 import copy
+import time
 
 #This might get removed, but for now it's here.
 STYLE = """
@@ -255,3 +256,25 @@ class SudokuVisualizer:
         
         #ui.run(native=True, window_size=(400, 300), fullscreen=False)
         ui.run()
+
+    def render_gui(self, steps):
+        ui.html(STYLE)
+        ui.label('Hello NiceGUI!')
+        
+        container = ui.html()
+        
+        container.set_content(steps[0])
+        ui.button('Solve Puzzle', on_click=lambda: handle_click(steps))
+        ui.run()
+        
+        #ui.html(steps[0])
+
+        
+        #ui.table()
+        
+        #ui.run(native=True, window_size=(400, 300), fullscreen=False)
+        def handle_click(steps):
+            for state in steps:
+                container.set_content(state)
+                time.sleep(1)
+                
