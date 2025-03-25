@@ -263,12 +263,21 @@ class SudokuVisualizer:
         ui.label('Hello NiceGUI!')
         
         container = ui.html()
-        timer = ui.timer(1.0, lambda: container.set_content(steps[3]))
-        timer.active = False
+        #timer = ui.timer(1.0, lambda: container.set_content(steps[3]))
+        #timer.active = False
         
-
         container.set_content(steps[0])
-        ui.button('Solve Puzzle', on_click=timer.active)
+        
+        global total_steps
+        total_steps = len(steps) -1
+        
+        with ui.grid(columns=5):
+            ui.button('<', on_click=lambda: container.set_content(get_previous_step(steps))), 
+            ui.button('Autosolve Puzzle', on_click=lambda: container.set_content(get_next_step(steps)))
+            ui.button('>', on_click=lambda: container.set_content(get_next_step(steps)))
+            ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
+            ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
+        
         ui.run()
         
         #ui.html(steps[0])
@@ -282,10 +291,38 @@ class SudokuVisualizer:
         #         container.set_content(state)
                 
         #         time.sleep(1)
-                
-        def getNextStep(steps):
-            return steps[2]
-            contentToReturn =  copy.deepcopy(steps[0])
-            steps.remove(0)
+        
+        # so here's a thought, what if I put the curent_step and how many steps there are as hidden properties, can this method then read them?
+        
+        
+        
+        def get_next_step(steps):
+            global current_step
+            global total_steps
+            if current_step <= total_steps:
+                current_step += 1
+            contentToReturn = steps[current_step]
             return contentToReturn
         
+        def get_previous_step(steps):
+            global current_step
+            if current_step > 0:
+                current_step -= 1
+            contentToReturn = steps[current_step]
+            return contentToReturn
+        
+        def get_last_step(steps):
+            global current_step
+            global total_steps
+            current_step = total_steps
+            contentToReturn = steps[total_steps]
+            return contentToReturn
+        
+        def reset_puzzle(steps):
+            global current_step
+            current_step = 0
+            contentToReturn = steps[current_step]
+            return contentToReturn
+        
+current_step = 0
+total_steps = 0
