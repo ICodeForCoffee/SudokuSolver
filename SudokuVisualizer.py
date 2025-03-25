@@ -260,20 +260,24 @@ class SudokuVisualizer:
     @ui.refreshable
     def render_gui(self, steps):
         ui.html(STYLE)
-        ui.label('Hello NiceGUI!')
+        ui.page_title = "Sudoku"
         
         container = ui.html()
-        #timer = ui.timer(1.0, lambda: container.set_content(steps[3]))
-        #timer.active = False
         
-        container.set_content(steps[0])
+        global timer
+        timer = ui.timer(1.0, lambda: container.set_content(get_next_step(steps)), active=False)
+        
+        global current_step
+        current_step = 0
         
         global total_steps
         total_steps = len(steps) -1
         
+        container.set_content(steps[0])
+        
         with ui.grid(columns=5):
             ui.button('<', on_click=lambda: container.set_content(get_previous_step(steps))), 
-            ui.button('Autosolve Puzzle', on_click=lambda: container.set_content(get_next_step(steps)))
+            ui.button('Autosolve Puzzle', on_click=lambda: activate_timer())
             ui.button('>', on_click=lambda: container.set_content(get_next_step(steps)))
             ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
@@ -304,6 +308,10 @@ class SudokuVisualizer:
             contentToReturn = steps[current_step]
             return contentToReturn
         
+        def activate_timer():
+            global timer
+            timer.active = True
+        
         def get_previous_step(steps):
             global current_step
             if current_step > 0:
@@ -320,9 +328,8 @@ class SudokuVisualizer:
         
         def reset_puzzle(steps):
             global current_step
+            global timer
+            timer.active = False
             current_step = 0
             contentToReturn = steps[current_step]
             return contentToReturn
-        
-current_step = 0
-total_steps = 0
