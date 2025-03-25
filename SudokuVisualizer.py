@@ -256,15 +256,19 @@ class SudokuVisualizer:
         
         #ui.run(native=True, window_size=(400, 300), fullscreen=False)
         ui.run()
-
+        
+    @ui.refreshable
     def render_gui(self, steps):
         ui.html(STYLE)
         ui.label('Hello NiceGUI!')
         
         container = ui.html()
+        timer = ui.timer(1.0, lambda: container.set_content(steps[3]))
+        timer.active = False
         
+
         container.set_content(steps[0])
-        ui.button('Solve Puzzle', on_click=lambda: handle_click(steps))
+        ui.button('Solve Puzzle', on_click=timer.active)
         ui.run()
         
         #ui.html(steps[0])
@@ -273,8 +277,15 @@ class SudokuVisualizer:
         #ui.table()
         
         #ui.run(native=True, window_size=(400, 300), fullscreen=False)
-        def handle_click(steps):
-            for state in steps:
-                container.set_content(state)
-                time.sleep(1)
+        # def handle_click(steps):
+        #     for state in steps:
+        #         container.set_content(state)
                 
+        #         time.sleep(1)
+                
+        def getNextStep(steps):
+            return steps[2]
+            contentToReturn =  copy.deepcopy(steps[0])
+            steps.remove(0)
+            return contentToReturn
+        
