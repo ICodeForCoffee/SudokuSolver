@@ -163,7 +163,7 @@ def test_load_function():
     puzzle = SudokuPuzzle()
     instance = SudokuSolver()
     
-    puzzle = instance.load_puzzle("SudokuPuzzles\\sudoku-puzzle1.txt")
+    puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
     
     # This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
@@ -190,7 +190,7 @@ def test_load_function_initial_value():
     puzzle = SudokuPuzzle()
     instance = SudokuSolver()
     
-    puzzle = instance.load_puzzle("SudokuPuzzles\\sudoku-puzzle1.txt")
+    puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
     
     # This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
