@@ -356,11 +356,18 @@ class SudokuSolver:
                 self.steps.append(self.visualizer.generate_sudoku_render(puzzle2))
             
             self.prune_possibilities(puzzle2)
+            
+            skip_guess = False
+            for xaxis in range(9):
+                for yaxis in range(9):
+                    if puzzle2.squares[xaxis][yaxis]['value'] == " " and len(puzzle2.squares[xaxis][yaxis]['possible_values']) == 0:
+                        skip_guess = True
 
-            puzzle2 = self.solve_puzzle(puzzle2)
-            if puzzle2.is_solved():
-                puzzle = copy.deepcopy(puzzle2)
-                return puzzle
+            if skip_guess != True:
+                puzzle2 = self.solve_puzzle(puzzle2)
+                if puzzle2.is_solved():
+                    puzzle = copy.deepcopy(puzzle2)
+                    return puzzle
       
         return unmodified_puzzle
 

@@ -12,11 +12,11 @@ def main():
     args = parser.parse_args()
     
     log_steps = False
-    if args.display or 1 == 1:
+    if args.display == True:
         log_steps = True
         
     instance = SudokuSolver(log_steps=log_steps)
-    visualizer = SudokuVisualizer()
+    
     puzzle = instance.load_puzzle(args.file)
     
     print("Initial puzzle\n")
@@ -44,7 +44,8 @@ def main():
         print(f"The solving method took {time_elapsed:.5f} seconds.")
     print()
     
-    if args.display or 1 == 1:
+    if args.display == True:
+        visualizer = SudokuVisualizer()
         print("Run the display")
         instance.populate_possible_values(puzzle)
         visualizer.render_gui(instance.steps)
