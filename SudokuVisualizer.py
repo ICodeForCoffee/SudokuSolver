@@ -275,10 +275,11 @@ class SudokuVisualizer:
         
         container.set_content(steps[0])
         
-        with ui.grid(columns=5):
-            ui.button('<', on_click=lambda: container.set_content(get_previous_step(steps))), 
+        with ui.grid(columns='auto auto auto 185px auto auto'):
+            ui.button('<', on_click=lambda: container.set_content(get_previous_step(steps)))
             ui.button('Autosolve Puzzle', on_click=lambda: activate_timer())
-            ui.button('>', on_click=lambda: container.set_content(get_next_step(steps)))
+            ui.button('>', on_click=lambda: container.set_content(get_next_step_and_stop(steps)))
+            ui.label('')
             ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
         
@@ -305,8 +306,8 @@ class SudokuVisualizer:
             global total_steps
             if current_step <= total_steps:
                 current_step += 1
-            contentToReturn = steps[current_step]
-            return contentToReturn
+            content_to_return = steps[current_step]
+            return content_to_return
         
         def activate_timer():
             global timer
@@ -317,19 +318,31 @@ class SudokuVisualizer:
             if current_step > 0:
                 current_step -= 1
             contentToReturn = steps[current_step]
+            global timer
+            timer.active = False
             return contentToReturn
+        
+        def get_next_step_and_stop(steps):
+            global current_step
+            global total_steps
+            if current_step <= total_steps:
+                current_step += 1
+            content_to_return = steps[current_step]
+            global timer
+            timer.active = False
+            return content_to_return
         
         def get_last_step(steps):
             global current_step
             global total_steps
             current_step = total_steps
-            contentToReturn = steps[total_steps]
-            return contentToReturn
+            content_to_return = steps[total_steps]
+            return content_to_return
         
         def reset_puzzle(steps):
             global current_step
             global timer
             timer.active = False
             current_step = 0
-            contentToReturn = steps[current_step]
-            return contentToReturn
+            content_to_return = steps[current_step]
+            return content_to_return
