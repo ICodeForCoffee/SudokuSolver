@@ -350,6 +350,7 @@ class SudokuSolver:
             puzzle2 = copy.deepcopy(unmodified_puzzle)
 
             puzzle2.squares[x][y]['value'] = possible_value
+            puzzle2.squares[x][y]['is_guess'] = True
             self.populate_possible_values(puzzle2)
             
             if self.log_steps == True:

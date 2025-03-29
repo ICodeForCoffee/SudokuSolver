@@ -41,6 +41,10 @@ STYLE = """
     background-color: gainsboro;
 }
 
+.guessValueCell {
+    background-color: khaki;
+}
+
 .cell-00, .cell-10, .cell-20, .cell-30, .cell-40, .cell-50, .cell-60, .cell-70, .cell-80, 
 .cell-03, .cell-13, .cell-23, .cell-33, .cell-43, .cell-53, .cell-63, .cell-73, .cell-83,
 .cell-06, .cell-16, .cell-26, .cell-36, .cell-46, .cell-56, .cell-66, .cell-76, .cell-86 {
@@ -230,7 +234,8 @@ class SudokuVisualizer:
                     
                     if puzzle.squares[x][y]['initial_value'] == True:
                         html_fragment = html_fragment.replace('"valueCell"', '"valueCell initialValueCell"')
-                        pass
+                    elif puzzle.squares[x][y]['is_guess'] == True:
+                        html_fragment = html_fragment.replace('"valueCell"', '"valueCell guessValueCell"')
                     
                     html_fragment = html_fragment.replace("xyz", str(found_value))
                     
