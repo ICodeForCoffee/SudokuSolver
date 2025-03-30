@@ -288,7 +288,7 @@ class SudokuVisualizer:
             ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
         
-        ui.run()
+        ui.run(reload=False)
         
         #ui.html(steps[0])
 
