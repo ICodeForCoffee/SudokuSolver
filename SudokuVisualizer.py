@@ -287,8 +287,10 @@ class SudokuVisualizer:
             ui.label('')
             ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
-        
-        ui.run(reload=False)
+       
+        #So I have to do more reading here. Reload means it doesn't solve the puzzle twice, but then none of my buttson work. 
+        ui.run()
+        #ui.run(reload=False)
         
         #ui.html(steps[0])
 
