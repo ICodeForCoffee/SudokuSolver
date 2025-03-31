@@ -1,4 +1,4 @@
-## Sudoku.py - Sudoku Solver
+## Sudoku Solver
 
 Solves Suddoku. This project has a main() file, two class files, and multiple test files you can run through the application.
 

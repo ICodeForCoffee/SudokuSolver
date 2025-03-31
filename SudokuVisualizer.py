@@ -291,22 +291,7 @@ class SudokuVisualizer:
         #So I have to do more reading here. Reload means it doesn't solve the puzzle twice, but then none of my buttson work. 
         ui.run()
         #ui.run(reload=False)
-        
-        #ui.html(steps[0])
-
-        
-        #ui.table()
-        
-        #ui.run(native=True, window_size=(400, 300), fullscreen=False)
-        # def handle_click(steps):
-        #     for state in steps:
-        #         container.set_content(state)
                 
-        #         time.sleep(1)
-        
-        # so here's a thought, what if I put the curent_step and how many steps there are as hidden properties, can this method then read them?
-        
-        
         
         def get_next_step(steps):
             global current_step
