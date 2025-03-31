@@ -280,10 +280,10 @@ class SudokuVisualizer:
         
         container.set_content(steps[0])
         
-        with ui.grid(columns='auto auto auto 185px auto auto'):
-            ui.button('<', on_click=lambda: container.set_content(get_previous_step(steps)))
-            ui.button('Autosolve Puzzle', on_click=lambda: activate_timer())
-            ui.button('>', on_click=lambda: container.set_content(get_next_step_and_stop(steps)))
+        with ui.grid(columns='auto auto auto 260px auto auto'):
+            ui.button(icon='arrow_back', on_click=lambda: container.set_content(get_previous_step(steps)))
+            ui.button(icon='play_arrow', on_click=lambda e: activate_timer(e.sender))
+            ui.button(icon='arrow_forward', on_click=lambda: container.set_content(get_next_step_and_stop(steps)))
             ui.label('')
             ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
@@ -316,9 +316,14 @@ class SudokuVisualizer:
             content_to_return = steps[current_step]
             return content_to_return
         
-        def activate_timer():
+        def activate_timer(button: ui.button):
             global timer
-            timer.active = True
+            if button._props["icon"] == "pause":
+                button.props("icon=play_arrow")
+                timer.active = False
+            else:
+                button.props("icon=pause")
+                timer.active = True
         
         def get_previous_step(steps):
             global current_step
