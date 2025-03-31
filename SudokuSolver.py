@@ -10,6 +10,7 @@ class SudokuSolver:
             self.visualizer = SudokuVisualizer()
 
     def load_puzzle(self, file_name):
+        #Load isn't using set_square because it's only for the initial puzzle state.
         file = open(file_name, "r")
         puzzle = SudokuPuzzle()
 
@@ -332,7 +333,11 @@ class SudokuSolver:
             print()
             self.display_puzzle_to_console(puzzle)
         
-        puzzle.squares[x][y]['possible_values'] = [value_to_set]
+        puzzle.set_square(x, y, value_to_set)
+        if self.log_steps == True:
+            self.populate_possible_values(puzzle)
+            self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+        
         puzzle.analysis_helped = True
 
     def guess_a_value(self, puzzle):
@@ -349,7 +354,7 @@ class SudokuSolver:
                 
             puzzle2 = copy.deepcopy(unmodified_puzzle)
 
-            puzzle2.squares[x][y]['value'] = possible_value
+            puzzle2.set_square(x, y, possible_value)
             puzzle2.squares[x][y]['is_guess'] = True
             self.populate_possible_values(puzzle2)
             
@@ -389,7 +394,7 @@ class SudokuSolver:
         for x in range(9):
             for y in range(9):
                 if len(puzzle.squares[x][y]['possible_values']) == 1:
-                    puzzle.squares[x][y]['value'] = puzzle.squares[x][y]['possible_values'][0]
+                    puzzle.set_square(x, y, puzzle.squares[x][y]['possible_values'][0])
                     promotions += 1
                     
                     if self.log_steps == True:

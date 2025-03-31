@@ -45,6 +45,23 @@ STYLE = """
     background-color: khaki;
 }
 
+.lastValueEntered { 
+    opacity: 1;
+    animation-name: fadeInSquare;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: .8s;
+}
+
+@keyFrames fadeInSquare {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .cell-00, .cell-10, .cell-20, .cell-30, .cell-40, .cell-50, .cell-60, .cell-70, .cell-80, 
 .cell-03, .cell-13, .cell-23, .cell-33, .cell-43, .cell-53, .cell-63, .cell-73, .cell-83,
 .cell-06, .cell-16, .cell-26, .cell-36, .cell-46, .cell-56, .cell-66, .cell-76, .cell-86 {
@@ -232,10 +249,19 @@ class SudokuVisualizer:
                     found_value = puzzle.squares[x][y]['value']
                     html_fragment = copy.deepcopy(FOUND_CELL)
                     
+                    
+                    last_square_entered = False
+                    if x == puzzle.last_square_x and y == puzzle.last_square_y:
+                        last_square_entered = True
+                    
                     if puzzle.squares[x][y]['initial_value'] == True:
                         html_fragment = html_fragment.replace('"valueCell"', '"valueCell initialValueCell"')
+                    elif puzzle.squares[x][y]['is_guess'] == True and last_square_entered == True:
+                        html_fragment = html_fragment.replace('"valueCell"', '"valueCell guessValueCell lastValueEntered"')
                     elif puzzle.squares[x][y]['is_guess'] == True:
                         html_fragment = html_fragment.replace('"valueCell"', '"valueCell guessValueCell"')
+                    elif last_square_entered == True:
+                        html_fragment = html_fragment.replace('"valueCell"', '"valueCell lastValueEntered"')
                     
                     html_fragment = html_fragment.replace("xyz", str(found_value))
                     
