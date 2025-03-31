@@ -1,4 +1,4 @@
-## Sudoku Solver
+# Sudoku Solver
 
 Solves Suddoku. This project has a main() file, two class files, and multiple test files you can run through the application.
 
@@ -14,5 +14,7 @@ This application includes unit tests in
 Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/Sudoku/tree/main/SudokuPuzzles).
 
 To call the application use `python sudoku.py -file PUZZLE_TO_SOLVE`. Debugging messages can be turned off with `-O`.
+
+## Gui Example
 
 <img width="556" alt="SudokuAppExample" src="https://github.com/user-attachments/assets/5bea2b61-10e9-45d2-9c1a-a983abda20d3" />
