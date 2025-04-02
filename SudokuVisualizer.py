@@ -233,7 +233,7 @@ class SudokuVisualizer:
         
         return body_new
 
-    def generate_sudoku_render(self, puzzle):
+    def generate_sudoku_render(self, puzzle, show_possibilities=True):
         sudoku_rendering = copy.deepcopy(SUDOKU_CONTAINER)
         
         for x in range(9):
@@ -244,7 +244,10 @@ class SudokuVisualizer:
                 if puzzle.squares[x][y]['value'] == " ":
                     possible_values = puzzle.squares[x][y]['possible_values']
         
-                    html_fragment = self.generate_possible_values_html(possible_values)
+                    if show_possibilities == True:
+                        html_fragment = self.generate_possible_values_html(possible_values)
+                    else:
+                        html_fragment = "&nbsp;"
                 else:
                     found_value = puzzle.squares[x][y]['value']
                     html_fragment = copy.deepcopy(FOUND_CELL)
