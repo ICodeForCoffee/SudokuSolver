@@ -283,7 +283,6 @@ class SudokuVisualizer:
         ui.html(sudoku_rendering)
         
         ui.button('Solve Puzzle', on_click=lambda: ui.notify('button was pressed'))
-        #ui.table()
         
         #ui.run(native=True, window_size=(400, 300), fullscreen=False)
         ui.run()
@@ -315,7 +314,8 @@ class SudokuVisualizer:
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
        
         #So I have to do more reading here. Reload means it doesn't solve the puzzle twice, but then none of my buttson work. 
-        ui.run()
+        #ui.run()
+        ui.run(native=True, window_size=(795, 885), fullscreen=False)
         #ui.run(reload=False)
                 
         
