@@ -34,6 +34,23 @@ class SudokuPuzzle:
             if value_list != found_values:
                 return False
 
+        for box_x in range(3):
+            for box_y in range(3):
+                found_values = []
+                
+                square_array = [0, 1, 2]
+                
+                for x in square_array:
+                    for y in square_array:
+                        if self.squares[x + (3* box_x)][y + (3 * box_y)]['value'] == " ":
+                            return False
+
+                        found_values.append(int(self.squares[x + (3 * box_x)][y + (3 * box_y)]['value']))
+                
+                found_values.sort()
+                if value_list != found_values:
+                    return False
+
         return True
     
     def set_square(self, x, y, value):
