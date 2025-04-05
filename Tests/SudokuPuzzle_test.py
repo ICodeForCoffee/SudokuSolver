@@ -87,3 +87,7 @@ def test_set_square():
     puzzle.set_square(3, 4, 6)
     
     assert puzzle.is_solved() == True
+    assert puzzle.last_square_x == 3
+    assert puzzle.last_square_y == 4
+    assert puzzle.squares[3][4]['value'] == 6
+    assert puzzle.squares[x][y]['possible_values'] == []

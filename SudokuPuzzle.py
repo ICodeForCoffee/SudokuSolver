@@ -40,3 +40,4 @@ class SudokuPuzzle:
         self.squares[x][y]['value'] = value
         self.last_square_x = x
         self.last_square_y = y
+        self.squares[x][y]['possible_values'] = []
