@@ -51,8 +51,8 @@ class SudokuSolver:
         while changesd_squares > 0:
             changesd_squares = 0
             self.populate_possible_values(puzzle)
-            self.prune_possibilities(puzzle)
             changesd_squares = self.promote_solved_squares(puzzle)
+            self.prune_possibilities(puzzle)
             
             # Do more complex elimination if the easy options have been removed.
             if changesd_squares == 0:
@@ -128,6 +128,7 @@ class SudokuSolver:
 
                             if only_x_axis_appearance or only_y_axis_appearance:
                                 found_axis_requirement = True
+                                #Change to set square
                                 puzzle.squares[x][y]['possible_values'] = [possible_value]
                             else:
                                 only_box_appearance = True
@@ -154,6 +155,7 @@ class SudokuSolver:
 
                                 if only_box_appearance:
                                     found_box_requirement = True
+                                    #Change to set square
                                     puzzle.squares[x][y]['possible_values'] = [possible_value]
 
 
@@ -400,5 +402,6 @@ class SudokuSolver:
                     if self.log_steps == True:
                         self.populate_possible_values(puzzle)
                         self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+                    #Should I return here?
 
         return promotions
