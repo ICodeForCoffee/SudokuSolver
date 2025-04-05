@@ -11,9 +11,10 @@ def main():
     #parser.add_argument("-v", "--verbose", help="Display all debug code", action="store_true", required=False)
     args = parser.parse_args()
     
-    log_steps = False
-    if args.display == True:
-        log_steps = True
+    #Counting the steps nowcounting steps now
+    log_steps = True
+    # if args.display == True:
+    #     log_steps = True
         
     instance = SudokuSolver(log_steps=log_steps)
     
@@ -42,6 +43,7 @@ def main():
         time_elapsed = end_time - start_time
         print()
         print(f"The solving method took {time_elapsed:.5f} seconds.")
+        print(f"The solution contained {len(instance.steps)} steps.")
     print()
     
     if args.display == True:
