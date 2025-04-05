@@ -1,3 +1,4 @@
+# Represents a Sudoku puzzle
 class SudokuPuzzle:
     def __init__(self):
         self.squares = [ [{'value': "", 'possible_values': [], 'initial_value:': "", 'is_guess': ""} for x in range(9)] for y in range(9)]
@@ -6,9 +7,7 @@ class SudokuPuzzle:
         self.last_square_x = ''
         self.last_square_y = ''
 
-    # def is_valid(self):
-    # Add a method to check if the puzzle status is valid
-
+    # Confirms the puzzle is solved and the puzzle is valid
     def is_solved(self):
         value_list = list(range(1, 10))
 
@@ -53,6 +52,8 @@ class SudokuPuzzle:
 
         return True
     
+    # Sets a square and logs that a square was solved
+    # The last square values are used in the GUI display
     def set_square(self, x, y, value):
         self.squares[x][y]['value'] = value
         self.last_square_x = x
