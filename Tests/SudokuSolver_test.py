@@ -209,3 +209,34 @@ def test_load_function_initial_value():
     assert puzzle.squares[0][1]['initial_value'] == False
     assert puzzle.squares[0][2]['initial_value'] == True
     assert puzzle.squares[1][1]['initial_value'] == True
+    assert puzzle.squares[0][0]['value'] == ' '
+    assert int(puzzle.squares[1][1]['value']) == 3
+    
+def test_guessing_function():
+    puzzle = SudokuPuzzle()
+    instance = SudokuSolver()
+    
+    # This is the same Matrix from sudoku-puzzle1.txt
+    matrix = [
+        [' ',' ',' ', 7 , 8 ,' ', 6 , 3 , 9 ],
+        [' ',' ',' ', 9 ,' ',' ', 7 , 5 , 2 ],
+        [ 7 ,' ',' ', 5 ,' ',' ', 8 , 1 , 4 ],
+        [' ', 7 ,' ',' ',' ', 5 , 1 ,' ',' '],
+        [' ', 8 ,' ', 6 , 9 ,' ',' ', 4 , 7 ],
+        [' ', 3 ,' ',' ', 2 , 7 ,' ',' ',' '],
+        [' ',' ', 7 ,' ',' ', 6 ,' ',' ', 1 ],
+        [' ',' ', 1 ,' ', 5 ,' ',' ', 7 ,' '],
+        [' ', 5 ,' ',' ', 7 ,' ', 4 ,' ', 6 ]
+    ]
+    
+    for x in range(9):
+        for y in range(9):
+            puzzle.squares[x][y]['value'] = matrix[x][y]
+
+    assert puzzle.is_solved() == False
+    
+    # Have the puzzle guess a value and make sure it solves the puzzle.
+    puzzle.guessing_used = False
+    instance.populate_possible_values(puzzle)
+    puzzle = instance.guess_a_value(puzzle)
+    assert puzzle.is_solved() == True

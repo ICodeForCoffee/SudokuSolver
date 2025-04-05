@@ -40,10 +40,10 @@ def main():
             print(f"Guessing was used to calculate this result")
         if puzzle.analysis_helped == True:
             print("The analysis method helped")
-        time_elapsed = end_time - start_time
-        print()
-        print(f"The solving method took {time_elapsed:.5f} seconds.")
-        print(f"The solution contained {len(instance.steps)} steps.")
+    time_elapsed = end_time - start_time
+    print()
+    print(f"The solving method took {time_elapsed:.5f} seconds.")
+    print(f"The solution contained {len(instance.steps)} steps.")
     print()
     
     if args.display == True:
