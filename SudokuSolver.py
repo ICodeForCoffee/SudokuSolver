@@ -52,7 +52,9 @@ class SudokuSolver:
             changesd_squares = 0
             self.populate_possible_values(puzzle)
             changesd_squares = self.promote_solved_squares(puzzle)
-            self.prune_possibilities(puzzle)
+            
+            if changesd_squares == 0:
+                changesd_squares = self.single_occurrence_promotion(puzzle)
             
             # Do more complex elimination if the easy options have been removed.
             if changesd_squares == 0:
@@ -106,7 +108,7 @@ class SudokuSolver:
                 else:
                     puzzle.squares[x][y]['possible_values'] = []
 
-    def prune_possibilities(self, puzzle):
+    def single_occurrence_promotion(self, puzzle):
         # checks for values that only occur once in a line or in a 3 x 3 box
         for x in range(9):
             for y in range(9):
@@ -128,8 +130,11 @@ class SudokuSolver:
 
                             if only_x_axis_appearance or only_y_axis_appearance:
                                 found_axis_requirement = True
-                                #Change to set square
-                                puzzle.squares[x][y]['possible_values'] = [possible_value]
+                                puzzle.set_square(x, y, possible_value)
+
+                                if self.log_steps == True:
+                                    self.populate_possible_values(puzzle)
+                                    self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
                             else:
                                 only_box_appearance = True
                                 #Check the box
@@ -155,8 +160,16 @@ class SudokuSolver:
 
                                 if only_box_appearance:
                                     found_box_requirement = True
-                                    #Change to set square
-                                    puzzle.squares[x][y]['possible_values'] = [possible_value]
+                                    puzzle.set_square(x, y, possible_value)
+
+                                    if self.log_steps == True:
+                                        self.populate_possible_values(puzzle)
+                                        self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+                                        
+        if found_axis_requirement or found_box_requirement:
+            return 1
+        else:
+            return 0
 
 
     def analyze_squares(self, puzzle):
@@ -362,8 +375,6 @@ class SudokuSolver:
             
             if self.log_steps == True:
                 self.steps.append(self.visualizer.generate_sudoku_render(puzzle2))
-            
-            self.prune_possibilities(puzzle2)
             
             skip_guess = False
             for xaxis in range(9):
