@@ -421,6 +421,11 @@ class SudokuSolver:
                     puzzle.set_square(x, y, puzzle.squares[x][y]['possible_values'][0])
                     promotions += 1
                     
+                    # When we guess a value, the possible wrong value could result in invalid values here, so terminate this early.
+                    # We need to prune invalid puzzles early.
+                    if puzzle.guessing_used == True:
+                        return promotions
+                    
                     if self.log_steps == True:
                         self.populate_possible_values(puzzle)
                         self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
