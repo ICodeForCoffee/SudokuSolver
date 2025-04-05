@@ -13,7 +13,15 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Python Debugger: Sudoku",
+            "name": "Python Debugger: Sudoku Console",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "Sudoku.py",
+            "console": "integratedTerminal",
+            "args": "-file .\\Puzzles\\sudoku-puzzle7.txt"
+        },
+        {
+            "name": "Python Debugger: Sudoku Display",
             "type": "debugpy",
             "request": "launch",
             "program": "Sudoku.py",
