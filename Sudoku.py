@@ -4,29 +4,45 @@ import argparse
 import time
 import copy
 
+display = False
+hide = False
+verbose = False
+
 def main():
     parser = argparse.ArgumentParser(prog="Sudoku Solver", description="Sudoku Solver")
     parser.add_argument("-file", help="Sudoku problem to solve", required=True, type=str)
     parser.add_argument("-d", "--display", help="Turn on the visualizer", action="store_true", required=False)
-    #parser.add_argument("-v", "--verbose", help="Display all debug code", action="store_true", required=False)
+    parser.add_argument("-np", help="Turns off possible values in the visualizer", action="store_true", required=False)
+    parser.add_argument("-v", "--verbose", help="Display all debug code", action="store_true", required=False)
     args = parser.parse_args()
     
-    #Counting the steps nowcounting steps now
-    log_steps = True
-    # if args.display == True:
-    #     log_steps = True
-        
-    instance = SudokuSolver(log_steps=log_steps)
-    
-    puzzle = instance.load_puzzle(args.file)
-    
-    print("Initial puzzle\n")
+    #Store the flags.
+    display_flag = False
+    hide_possible_values_flag = False
+    verbose_flag = False
+    if args.display == True:
+        display_flag = True
+    if args.np == True:
+        hide_possible_values_flag = True
+    if args.verbose == True:
+        verbose_flag = True
 
-    #ToDo Code below will have to change to work with the display
+    instance = SudokuSolver(log_steps=True)
+    puzzle = instance.load_puzzle(args.file)
+
+    if display_flag == True:
+        run_display_mode(puzzle, hide_possible_values_flag)
+    else:
+        run_console_mode(puzzle, verbose_flag)
+
+def run_console_mode(puzzle, verbose_flag):
+    instance = SudokuSolver(log_steps=True)
+        
+    print("Initial puzzle\n")
     instance.display_puzzle_to_console(puzzle)
     
     start_time = time.time()
-    puzzle = instance.solve_puzzle(puzzle)
+    puzzle = instance.start_solving(puzzle)
     end_time = time.time()
     
     print("After attempting to solve\n")
@@ -45,12 +61,13 @@ def main():
     print(f"The solving method took {time_elapsed:.5f} seconds.")
     print(f"The solution contained {len(instance.steps)} steps.")
     print()
-    
-    if args.display == True:
-        visualizer = SudokuVisualizer()
-        print("Run the display")
-        instance.populate_possible_values(puzzle)
-        visualizer.render_gui(instance.steps)
-    
+
+def run_display_mode(puzzle, hide_possible_values_flag):
+    instance = SudokuSolver(log_steps=True)
+    visualizer = SudokuVisualizer()
+    print("Run the display")
+    instance.populate_possible_values(puzzle)
+    puzzle = instance.start_solving(puzzle)
+    visualizer.render_gui(instance.steps)
 
 main()

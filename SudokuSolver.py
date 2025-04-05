@@ -45,6 +45,16 @@ class SudokuSolver:
             print("")
         print("")
 
+    def start_solving(self, puzzle):
+        #record the fist step and then solve
+        self.record_step(puzzle)
+        puzzle = self.solve_puzzle(puzzle)
+        return puzzle
+    
+    def record_step(self, puzzle):
+        self.populate_possible_values(puzzle)
+        self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+
     def solve_puzzle(self, puzzle):
         changesd_squares = 1
 
