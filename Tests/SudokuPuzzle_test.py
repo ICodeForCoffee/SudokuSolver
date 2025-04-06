@@ -65,7 +65,6 @@ def test_puzzle_is_solved_but_invalid():
     assert puzzle.is_solved() == False
 
 def test_set_square():
-    
     puzzle = SudokuPuzzle()
     
     matrix = [
@@ -84,10 +83,12 @@ def test_set_square():
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
     
+    puzzle.squares[3][4]['possible_values'] = [6]
+    assert puzzle.squares[3][4]['possible_values'] == [6]
     puzzle.set_square(3, 4, 6)
     
     assert puzzle.is_solved() == True
     assert puzzle.last_square_x == 3
     assert puzzle.last_square_y == 4
     assert puzzle.squares[3][4]['value'] == 6
-    assert puzzle.squares[x][y]['possible_values'] == []
+    assert puzzle.squares[3][4]['possible_values'] == []

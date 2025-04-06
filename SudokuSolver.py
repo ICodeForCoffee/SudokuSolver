@@ -54,15 +54,26 @@ class SudokuSolver:
             self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
 
     def solve_puzzle(self, puzzle):
+        self.populate_possible_values(puzzle)
+        
         changesd_squares = 1
-
         while changesd_squares > 0:
+            # If this puzzle is not solveable any more, return
+            if puzzle.is_solvable() == False:
+                return puzzle
+            
             changesd_squares = 0
-            self.populate_possible_values(puzzle)
+            #self.populate_possible_values(puzzle)
             changesd_squares = self.promote_solved_squares(puzzle)
+            
+            # Since changes squreas does promitions until he realizes the puzzle might not be solveable, check here again
+            if puzzle.is_solvable() == False:
+                return puzzle
             
             if changesd_squares == 0:
                 changesd_squares = self.single_occurrence_promotion(puzzle)
+                if puzzle.is_solvable() == False:
+                    return puzzle
                 
             if changesd_squares == 0:
                 changesd_squares = self.hidden_pairs(puzzle)
@@ -386,14 +397,11 @@ class SudokuSolver:
 
             puzzle2.set_square(x, y, possible_value)
             puzzle2.squares[x][y]['is_guess'] = True
-            #self.populate_possible_values(puzzle2)
-            self.record_step(puzzle)
+            self.record_step(puzzle2)
             
             skip_guess = False
-            for xaxis in range(9):
-                for yaxis in range(9):
-                    if puzzle2.squares[xaxis][yaxis]['value'] == " " and len(puzzle2.squares[xaxis][yaxis]['possible_values']) == 0:
-                        skip_guess = True
+            if puzzle2.is_solvable() == False:
+                skip_guess == True
 
             if skip_guess != True:
                 puzzle2 = self.solve_puzzle(puzzle2)
@@ -415,6 +423,7 @@ class SudokuSolver:
         return -1, -1
 
     def promote_solved_squares(self, puzzle):
+        ###Promotes solved squares.###
         promotions = 0
 
         for x in range(9):
@@ -424,12 +433,7 @@ class SudokuSolver:
                     self.record_step(puzzle)
                     promotions += 1
                     
-                    # When we guess a value, the possible wrong value could result in invalid values here, so terminate this early.
-                    # We need to prune invalid puzzles early.
-                    if puzzle.guessing_used == True:
-                         return promotions
-                    
-                    #Should I return here?
-                    #return 1
+                    if puzzle.is_solvable == False:
+                        return promotions
 
         return promotions

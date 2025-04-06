@@ -334,3 +334,27 @@ def test_logging_of_steps():
     puzzle = instance.start_solving(puzzle)
     assert puzzle.is_solved() == True
     assert len(instance.steps) == 4
+    
+    
+def test_is_solvable():
+    puzzle = SudokuPuzzle()
+    instance = SudokuSolver(log_steps=True)
+
+    matrix = [
+        [ 6 , 1 , 2 , 7 , 8 , 4 , 5 , 3 , 9 ],
+        [ 5 , 4 , 8 , 9 ,' ', 3 , 7 ,' ', 2 ],
+        [ 7 , 9 , 3 , 5 ,' ', 2 , 8 ,' ', 4 ],
+        [ 9 , 7 , 6 , 4 , 3 , 5 , 1 , 2 , 8 ],
+        [ 2 , 8 , 5 , 6 , 9 , 1 , 3 , 4 , 7 ],
+        [ 1 , 3 , 4 , 8 , 2 , 7 , 6 ,' ', 5 ],
+        [ 8 , 2 , 7 , 3 , 4 , 6 , 9 , 5 , 1 ],
+        [' ',' ', 1 , 2 , 5 ,' ',' ', 7 , 3 ],
+        [' ', 5 ,' ', 1 , 7 ,' ', 4 ,' ', 6 ]
+    ]
+    
+    for x in range(9):
+        for y in range(9):
+            puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
+    
+    instance.populate_possible_values(puzzle)
