@@ -10,6 +10,7 @@ class SudokuSolver:
         self.visualizer = SudokuVisualizer()
 
     def load_puzzle(self, file_name):
+        ###Loads a puzzle.###
         #Load isn't using set_square because it's only for the initial puzzle state.
         file = open(file_name, "r")
         puzzle = SudokuPuzzle()

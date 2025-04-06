@@ -68,6 +68,38 @@ class SudokuPuzzle:
                 elif self.squares[x][y]['value'] == " ":
                     unsolved = True
         
+        # This check shaves off steps, but it adds runtime overhead
+        if unsolved:
+            value_list = list(range(1, 10))
+            for x in range(9):
+                found_values = []
+                for y in range(9):
+                    if self.squares[x][y]['value'] == " ":
+                        for possible_values in self.squares[x][y]['possible_values']:
+                            if not possible_values in found_values:
+                                found_values.append(int(possible_values))
+                    else:
+                        found_values.append(int(self.squares[x][y]['value']))
+                found_values.sort()
+
+                if value_list != found_values:
+                    return False
+            
+            for y in range(9):
+                found_values = []
+                for x in range(9):
+                    if self.squares[x][y]['value'] == " ":
+                        for possible_values in self.squares[x][y]['possible_values']:
+                            if not possible_values in found_values:
+                                found_values.append(int(possible_values))
+                    else:
+                        found_values.append(int(self.squares[x][y]['value']))
+                found_values.sort()
+
+                if value_list != found_values:
+                    #return False
+                    return True
+        
         return True
     
     def set_square(self, x, y, value):

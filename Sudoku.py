@@ -59,7 +59,7 @@ def run_console_mode(puzzle, verbose_flag):
     time_elapsed = end_time - start_time
     print()
     print(f"The solving method took {time_elapsed:.5f} seconds.")
-    print(f"The solution contained {len(instance.steps)} steps.")
+    print(f"The solution took {len(instance.steps)} steps.")
     print()
 
 def run_display_mode(puzzle, hide_possible_values_flag):
