@@ -3,8 +3,8 @@ from SudokuVisualizer import SudokuVisualizer
 import copy
 
 class SudokuSolver:
-    def __init__(self, log_steps=True):
-        self.log_steps = log_steps
+    def __init__(self, log_gui_display=True):
+        self.log_gui_display = log_gui_display
         self.steps = []
         #note, I oculd change this to record console values instead of html
         self.visualizer = SudokuVisualizer()
@@ -50,8 +50,11 @@ class SudokuSolver:
     def record_step(self, puzzle):
         self.populate_possible_values(puzzle)
         # For unit testing, you can turn off the GUI generator, which add run time, and is a dependency not needed
-        if self.log_steps == True:
+        if self.log_gui_display == True:
             self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+        else:
+            #Just sticking something on the stack so I can still track how many steps are being used here.
+            self.steps.append("StepDone")
 
     def solve_puzzle(self, puzzle):
         self.populate_possible_values(puzzle)
@@ -74,16 +77,17 @@ class SudokuSolver:
                 changesd_squares = self.single_occurrence_promotion(puzzle)
                 if puzzle.is_solvable() == False:
                     return puzzle
-                
+            
+            # Do more complex elimination if the easy options have been removed.
+            if changesd_squares == 0:
+                changesd_squares = self.analyze_squares(puzzle)
+
+            # Planning ideas
             if changesd_squares == 0:
                 changesd_squares = self.hidden_pairs(puzzle)
                 
             if changesd_squares == 0:
                 changesd_squares = self.hidden_triples(puzzle)
-            
-            # Do more complex elimination if the easy options have been removed.
-            if changesd_squares == 0:
-                changesd_squares = self.analyze_squares(puzzle)
 
         if not puzzle.is_solved():
             puzzle = self.guess_a_value(puzzle)

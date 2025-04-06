@@ -4,7 +4,7 @@ import pytest
 
 def test_basic_solving():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     # The missing value here is 6.
     matrix = [
@@ -48,7 +48,7 @@ def test_basic_solving():
 
 def test_simple_solving():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     #This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
@@ -76,7 +76,7 @@ def test_simple_solving():
 
 def test_complex_solving_one():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     # This is the same Matrix from sudoku-puzzle6.txt
     matrix = [
@@ -103,7 +103,7 @@ def test_complex_solving_one():
 
 def test_complex_solving_two():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     # This is the same Matrix from sudoku-puzzle4.txt with two values filled in
     matrix = [
@@ -130,7 +130,7 @@ def test_complex_solving_two():
 
 def test_analysis_method():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     # This is the same Matrix from sudoku-puzzle4.txt with two values filled in
     matrix = [
@@ -167,7 +167,7 @@ def test_analysis_method():
 
 def test_load_function():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
     
@@ -194,7 +194,7 @@ def test_load_function():
 
 def test_load_function_initial_value():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
     
@@ -220,7 +220,7 @@ def test_load_function_initial_value():
     
 def test_guessing_function():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     # This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
@@ -251,7 +251,7 @@ def test_guessing_function():
     
 def test_populate_possible_values():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=False)
+    instance = SudokuSolver(log_gui_display=False)
     
     # The missing value here is 6.
     matrix = [
@@ -310,7 +310,7 @@ def test_populate_possible_values():
     
 def test_logging_of_steps():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=True)
+    instance = SudokuSolver(log_gui_display=True)
     
     # The missing value here is 6.
     matrix = [
@@ -338,7 +338,7 @@ def test_logging_of_steps():
     
 def test_is_solvable():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver(log_steps=True)
+    instance = SudokuSolver(log_gui_display=True)
 
     matrix = [
         [ 6 , 1 , 2 , 7 , 8 , 4 , 5 , 3 , 9 ],

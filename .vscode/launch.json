@@ -26,7 +26,7 @@
             "request": "launch",
             "program": "Sudoku.py",
             "console": "integratedTerminal",
-            "args": "-d -file .\\Puzzles\\sudoku-puzzle7.txt"
+            "args": "-d -file .\\Puzzles\\sudoku-puzzle2.txt"
         }
     ]
 }
