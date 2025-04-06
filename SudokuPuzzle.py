@@ -97,8 +97,7 @@ class SudokuPuzzle:
                 found_values.sort()
 
                 if value_list != found_values:
-                    #return False
-                    return True
+                    return False
         
         return True
     
