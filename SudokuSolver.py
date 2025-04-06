@@ -6,8 +6,8 @@ class SudokuSolver:
     def __init__(self, log_gui_display=True):
         self.log_gui_display = log_gui_display
         self.steps = []
-        #note, I oculd change this to record console values instead of html
-        self.visualizer = SudokuVisualizer()
+        if log_gui_display:
+            self.visualizer = SudokuVisualizer()
 
     def load_puzzle(self, file_name):
         ###Loads a puzzle.###
@@ -50,14 +50,16 @@ class SudokuSolver:
     
     def record_step(self, puzzle):
         self.populate_possible_values(puzzle)
+        
         # For unit testing, you can turn off the GUI generator, which add run time, and is a dependency not needed
         if self.log_gui_display == True:
             self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
         else:
             #Just sticking something on the stack so I can still track how many steps are being used here.
-            self.steps.append("StepDone")
+            self.steps.append("X")
 
     def solve_puzzle(self, puzzle):
+        ###Solves a Sudoku puzzle.###
         self.populate_possible_values(puzzle)
         
         changesd_squares = 1
@@ -67,14 +69,14 @@ class SudokuSolver:
                 return puzzle
             
             changesd_squares = 0
-            changesd_squares = self.promote_solved_squares(puzzle)
+            changesd_squares = self.naked_single(puzzle)
             
             # Since changes squreas does promitions until he realizes the puzzle might not be solveable, check here again
             if puzzle.is_solvable() == False:
                 return puzzle
             
             if changesd_squares == 0:
-                changesd_squares = self.single_occurrence_promotion(puzzle)
+                changesd_squares = self.hidden_single(puzzle)
                 if puzzle.is_solvable() == False:
                     return puzzle
             
@@ -86,13 +88,14 @@ class SudokuSolver:
 
             # Planning ideas
             if changesd_squares == 0:
-                possible_elimination_miade = self.hidden_pairs(puzzle)
+                possible_elimination_made = self.hidden_pairs(puzzle)
                 
-                if not possible_elimination_miade:
-                    changesd_squares = self.hidden_triples(puzzle)
+                if not possible_elimination_made:
+                    possible_elimination_made = self.hidden_triples(puzzle)
                     
                 #How is this changing the results if nothing has been removed?
-                changesd_squares = self.promote_solved_squares(puzzle)
+                if possible_elimination_made:
+                    changesd_squares = self.promote_solved_squares(puzzle)
 
         if not puzzle.is_solved():
             puzzle = self.guess_a_value(puzzle)
@@ -100,6 +103,7 @@ class SudokuSolver:
         return puzzle
 
     def populate_possible_values(self, puzzle):
+        ###Populates the possible value array.###
         for x in range(9):
             for y in range(9):
                 if puzzle.squares[x][y]['value'] == " ":
@@ -141,8 +145,8 @@ class SudokuSolver:
                 else:
                     puzzle.squares[x][y]['possible_values'] = []
 
-    def single_occurrence_promotion(self, puzzle):
-        # checks for values that only occur once in a line or in a 3 x 3 box
+    def hidden_single(self, puzzle):
+        ###Checks for values that only occur once in a line or in a 3 x 3 box,###
         for x in range(9):
             for y in range(9):
                 found_axis_requirement = False
@@ -373,7 +377,16 @@ class SudokuSolver:
         return False
     
     def hidden_pairs(self, puzzle):
-        return 0
+        for number_of_options in range(2, 9):
+            for x in range(9):
+                for y in range(9):
+                    if puzzle.squares[x][y]['value'] == " " and len(puzzle.squares[x][y]['possible_values']) == number_of_options:
+                        pass
+                        # change_made = self.perform_analysis(puzzle, x, y)
+                        # if (change_made):
+                        #     return True
+
+        return False
     
     def hidden_triples(self, puzzle):
         return 0
@@ -430,7 +443,7 @@ class SudokuSolver:
         #This is an error state
         return -1, -1
 
-    def promote_solved_squares(self, puzzle):
+    def naked_single(self, puzzle):
         ###Promotes solved squares.###
         promotions = 0
 
