@@ -376,6 +376,15 @@ def test_get_possible_pairs():
     assert [4, 9] in results
     assert [1, 7] in results
     assert [5, 7] in results
+    
+    possible_pairs = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    results = instance.get_possible_pairs(possible_pairs)
+    
+    assert len(results) == 36
+    assert [1, 9] in results
+    assert [4, 9] in results
+    assert [1, 7] in results
+    assert [5, 7] in results
 
 def test_hidden_pairs_check():
     puzzle = SudokuPuzzle()

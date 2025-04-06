@@ -444,11 +444,7 @@ class SudokuSolver:
                             self.mark_hidden_pairs(puzzle, x1, y1, x1, yaxis, pair_of_possibilities)
                             return True
         
-        # possible_values = puzzle.squares[x][y]['possible_values']
-        # possible_pairs = self.get_possible_pairs(possible_values)
-        
-        # for possible_value in puzzle.squares[x][y]['possible_values']:
-        #     other_possible_values = copy.deepcopy(puzzle.squares[x][y]['possible_values'])
+        # Box check
         
         return False
     
@@ -459,166 +455,16 @@ class SudokuSolver:
     def get_possible_pairs(self, possible_values):
         # TODO Changes this to a real math calculation instead of this mess
         # In my defense, I'm trying to code the method using this first before I worry about the nitty gritty of making this code look pretty.
-        if len(possible_values) == 2:
-            sets = [[possible_values[0],possible_values[1]]]
-            return sets
         
-        if len(possible_values) == 3:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[1],possible_values[2]]
-                
-                ]
-            return sets
+        sets = []
         
-        if len(possible_values) == 4:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[0],possible_values[3]],
-                [possible_values[1],possible_values[2]],
-                [possible_values[1],possible_values[3]],
-                [possible_values[2],possible_values[3]]
-            ]
-            return sets
-        
-        if len(possible_values) == 5:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[0],possible_values[3]],
-                [possible_values[0],possible_values[4]],
-                [possible_values[1],possible_values[2]],
-                [possible_values[1],possible_values[3]],
-                [possible_values[1],possible_values[4]],
-                [possible_values[2],possible_values[3]],
-                [possible_values[2],possible_values[4]],
-                [possible_values[3],possible_values[4]]
-            ]
-            return sets
-        
-        if len(possible_values) == 6:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[0],possible_values[3]],
-                [possible_values[0],possible_values[4]],
-                [possible_values[0],possible_values[5]],
-                [possible_values[1],possible_values[2]],
-                [possible_values[1],possible_values[3]],
-                [possible_values[1],possible_values[4]],
-                [possible_values[1],possible_values[5]],
-                [possible_values[2],possible_values[3]],
-                [possible_values[2],possible_values[4]],
-                [possible_values[2],possible_values[5]],
-                [possible_values[3],possible_values[4]],
-                [possible_values[3],possible_values[5]],
-                [possible_values[4],possible_values[5]]
-            ]
-            return sets
-    
-        if len(possible_values) == 7:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[0],possible_values[3]],
-                [possible_values[0],possible_values[4]],
-                [possible_values[0],possible_values[5]],
-                [possible_values[0],possible_values[6]],
-                [possible_values[1],possible_values[2]],
-                [possible_values[1],possible_values[3]],
-                [possible_values[1],possible_values[4]],
-                [possible_values[1],possible_values[5]],
-                [possible_values[1],possible_values[6]],
-                [possible_values[2],possible_values[3]],
-                [possible_values[2],possible_values[4]],
-                [possible_values[2],possible_values[5]],
-                [possible_values[2],possible_values[6]],
-                [possible_values[3],possible_values[4]],
-                [possible_values[3],possible_values[5]],
-                [possible_values[3],possible_values[6]],
-                [possible_values[4],possible_values[5]],
-                [possible_values[4],possible_values[6]],
-                [possible_values[5],possible_values[6]]
-            ]
-            return sets
-        
-        if len(possible_values) == 8:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[0],possible_values[3]],
-                [possible_values[0],possible_values[4]],
-                [possible_values[0],possible_values[5]],
-                [possible_values[0],possible_values[6]],
-                [possible_values[0],possible_values[7]],
-                [possible_values[1],possible_values[2]],
-                [possible_values[1],possible_values[3]],
-                [possible_values[1],possible_values[4]],
-                [possible_values[1],possible_values[5]],
-                [possible_values[1],possible_values[6]],
-                [possible_values[1],possible_values[7]],
-                [possible_values[2],possible_values[3]],
-                [possible_values[2],possible_values[4]],
-                [possible_values[2],possible_values[5]],
-                [possible_values[2],possible_values[6]],
-                [possible_values[2],possible_values[7]],
-                [possible_values[3],possible_values[4]],
-                [possible_values[3],possible_values[5]],
-                [possible_values[3],possible_values[6]],
-                [possible_values[3],possible_values[7]],
-                [possible_values[4],possible_values[5]],
-                [possible_values[4],possible_values[6]],
-                [possible_values[4],possible_values[7]],
-                [possible_values[5],possible_values[6]],
-                [possible_values[5],possible_values[7]],
-                [possible_values[6],possible_values[7]]
-            ]
-            return sets
-        
-        if len(possible_values) == 9:
-            sets = [
-                [possible_values[0],possible_values[1]],
-                [possible_values[0],possible_values[2]],
-                [possible_values[0],possible_values[3]],
-                [possible_values[0],possible_values[4]],
-                [possible_values[0],possible_values[5]],
-                [possible_values[0],possible_values[6]],
-                [possible_values[0],possible_values[7]],
-                [possible_values[0],possible_values[8]],
-                [possible_values[1],possible_values[2]],
-                [possible_values[1],possible_values[3]],
-                [possible_values[1],possible_values[4]],
-                [possible_values[1],possible_values[5]],
-                [possible_values[1],possible_values[6]],
-                [possible_values[1],possible_values[7]],
-                [possible_values[1],possible_values[8]],
-                [possible_values[2],possible_values[3]],
-                [possible_values[2],possible_values[4]],
-                [possible_values[2],possible_values[5]],
-                [possible_values[2],possible_values[6]],
-                [possible_values[2],possible_values[7]],
-                [possible_values[2],possible_values[8]],
-                [possible_values[3],possible_values[4]],
-                [possible_values[3],possible_values[5]],
-                [possible_values[3],possible_values[6]],
-                [possible_values[3],possible_values[7]],
-                [possible_values[3],possible_values[8]],
-                [possible_values[4],possible_values[5]],
-                [possible_values[4],possible_values[6]],
-                [possible_values[4],possible_values[7]],
-                [possible_values[4],possible_values[8]],
-                [possible_values[5],possible_values[6]],
-                [possible_values[5],possible_values[7]],
-                [possible_values[5],possible_values[8]],
-                [possible_values[6],possible_values[7]],
-                [possible_values[6],possible_values[8]],
-                [possible_values[7],possible_values[8]]
-            ]
-            return sets
-    
-        return [[]]
+        if len(possible_values) >= 2:
+            for value in possible_values:
+                for other_value in possible_values:
+                    if other_value > value:
+                        sets.append([value, other_value])
+                        
+        return sets
 
     def hidden_triples(self, puzzle):
         # TODO implement later
