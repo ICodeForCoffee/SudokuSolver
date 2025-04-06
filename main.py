@@ -50,12 +50,12 @@ def run_console_mode(puzzle, verbose_flag):
     
     print(f"This puzzle is {"solved" if puzzle.is_solved() == True else "unsolved"}")
     if __debug__:
-        if puzzle.guessing_used == True or puzzle.analysis_helped == True:
+        if puzzle.guessing_used == True or puzzle.locked_candidates_helped == True:
             print()
         if puzzle.guessing_used == True:
             print(f"Guessing was used to calculate this result")
-        if puzzle.analysis_helped == True:
-            print("The analysis method helped")
+        if puzzle.locked_candidates_helped == True:
+            print("The locked candidates method helped")
     time_elapsed = end_time - start_time
     print()
     print(f"The solving method took {time_elapsed:.5f} seconds.")

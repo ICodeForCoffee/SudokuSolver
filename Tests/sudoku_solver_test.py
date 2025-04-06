@@ -128,7 +128,7 @@ def test_complex_solving_two():
     puzzle = instance.solve_puzzle(puzzle)
     assert puzzle.is_solved() == True
 
-def test_analysis_method():
+def test_locked_candidates_analysis_method():
     # TODO Need to verify if I'm keeping the method this code tests
     puzzle = SudokuPuzzle()
     instance = SudokuSolver(log_gui_display=False)
@@ -157,7 +157,7 @@ def test_analysis_method():
     instance.populate_possible_values(puzzle)
     assert puzzle.squares[7][4]['value'] == ' '
     assert len(puzzle.squares[7][4]['possible_values']) == 3
-    change_made = instance.perform_analysis(puzzle, 7, 4)
+    change_made = instance.locked_candidates_analysis(puzzle, 7, 4)
     assert change_made == True
     
     instance.naked_single(puzzle)

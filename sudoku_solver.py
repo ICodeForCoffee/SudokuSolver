@@ -81,13 +81,14 @@ class SudokuSolver:
                     return puzzle
             
             # Do more complex elimination if the easy options have been removed.
-            # if changesd_squares == 0:
-            #     changesd_squares = self.analyze_squares(puzzle)
-            #     if puzzle.is_solvable() == False:
-            #         return puzzle
+            if changesd_squares == 0:
+                changesd_squares = self.locked_candidates(puzzle)
+                if puzzle.is_solvable() == False:
+                    return puzzle
 
             # Planning ideas
             if changesd_squares == 0:
+                
                 possible_elimination_made = self.hidden_pairs(puzzle)
                 
                 if not possible_elimination_made:
@@ -206,18 +207,18 @@ class SudokuSolver:
     # For each square not solved, check each possible value and see if the other possibl3e values in that square must appear in a 
     # different row or column out of line with this square due to limitations due to their home 3 x 3 box.
     # If we can determine that the other possibilities 
-    def analyze_squares(self, puzzle):
+    def locked_candidates(self, puzzle):
         for number_of_options in range(2, 9):
             for x in range(9):
                 for y in range(9):
                     if puzzle.squares[x][y]['value'] == " " and len(puzzle.squares[x][y]['possible_values']) == number_of_options:
-                        change_made = self.perform_analysis(puzzle, x, y)
+                        change_made = self.locked_candidates_analysis(puzzle, x, y)
                         if (change_made):
                             return 1
 
         return 0
 
-    def perform_analysis(self, puzzle, x, y):
+    def locked_candidates_analysis(self, puzzle, x, y):
         # There is another case I can check here for solving the puzzle.
         # I need to check if values for a cell must appear in other cells aligned with the cell on the x asxis and the yaxis. If so, I can prune the list of possibilities
         # Specifically, the use case of two values must appear in two specific cells on any axis.
@@ -269,7 +270,7 @@ class SudokuSolver:
                         everything_in_list = False
                 
                 if everything_in_list:
-                    self.perform_analysis_set_value(puzzle, x, y, possible_value)
+                    self.locked_candidates_set_value(puzzle, x, y, possible_value)
                     return True
                 
             # Vertiocal Box 2
@@ -297,7 +298,7 @@ class SudokuSolver:
                         everything_in_list = False
                 
                 if everything_in_list:
-                    self.perform_analysis_set_value(puzzle, x, y, possible_value)
+                    self.locked_candidates_set_value(puzzle, x, y, possible_value)
                     return True
             
             # Let's get some ranges for a horizontial slice
@@ -343,7 +344,7 @@ class SudokuSolver:
                         everything_in_list = False
                 
                 if everything_in_list:
-                    self.perform_analysis_set_value(puzzle, x, y, possible_value)
+                    self.locked_candidates_set_value(puzzle, x, y, possible_value)
                     return True
 
             # Horizontal Box 2
@@ -371,7 +372,7 @@ class SudokuSolver:
                         everything_in_list = False
                 
                 if everything_in_list:
-                    self.perform_analysis_set_value(puzzle, x, y, possible_value)
+                    self.locked_candidates_set_value(puzzle, x, y, possible_value)
                     return True
         
         return False
@@ -388,10 +389,13 @@ class SudokuSolver:
 
         return False
     
+    def hidden_pairs_check_square(self, puzzle, x, y):
+        return False
+    
     def hidden_triples(self, puzzle):
-        return 0
+        return False
 
-    def perform_analysis_set_value(self, puzzle, x, y, value_to_set):
+    def locked_candidates_set_value(self, puzzle, x, y, value_to_set):
         if __debug__:
             print(f"Analysis calculated the value at [{x}, {y}] to be {value_to_set}") #added for debugging.
             print()
@@ -400,7 +404,7 @@ class SudokuSolver:
         puzzle.set_square(x, y, value_to_set)
         self.record_step(puzzle)
         
-        puzzle.analysis_helped = True
+        puzzle.locked_candidates_helped = True
 
     def guess_a_value(self, puzzle):
         puzzle.guessing_used = True
