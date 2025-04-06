@@ -218,7 +218,7 @@ SUDOKU_CONTAINER = """
 
 class SudokuVisualizer:
     def __init__(self):
-        #ToDo Should all the HTML and styling be declared in init?
+        # TODO Should all the HTML and styling be declared in init?
         pass
 
     def generate_possible_values_html(self, possible_values):
@@ -325,7 +325,7 @@ class SudokuVisualizer:
         def get_next_step(steps):
             global current_step
             global total_steps
-            if current_step <= total_steps:
+            if current_step < total_steps:
                 current_step += 1
             content_to_return = steps[current_step]
             return content_to_return

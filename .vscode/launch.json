@@ -16,7 +16,7 @@
             "name": "Python Debugger: Sudoku Console",
             "type": "debugpy",
             "request": "launch",
-            "program": "Sudoku.py",
+            "program": "main.py",
             "console": "integratedTerminal",
             "args": "-file .\\Puzzles\\sudoku-puzzle7.txt"
         },
@@ -24,7 +24,7 @@
             "name": "Python Debugger: Sudoku Display",
             "type": "debugpy",
             "request": "launch",
-            "program": "Sudoku.py",
+            "program": "main.py",
             "console": "integratedTerminal",
             "args": "-d -file .\\Puzzles\\sudoku-puzzle2.txt"
         }
