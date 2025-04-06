@@ -3,11 +3,11 @@ from SudokuVisualizer import SudokuVisualizer
 import copy
 
 class SudokuSolver:
-    def __init__(self, log_steps=False):
+    def __init__(self, log_steps=True):
         self.log_steps = log_steps
         self.steps = []
-        if log_steps == True:
-            self.visualizer = SudokuVisualizer()
+        #note, I oculd change this to record console values instead of html
+        self.visualizer = SudokuVisualizer()
 
     def load_puzzle(self, file_name):
         #Load isn't using set_square because it's only for the initial puzzle state.
@@ -26,10 +26,6 @@ class SudokuSolver:
                     puzzle.squares[x][y]['initial_value'] = False
                 else:
                     puzzle.squares[x][y]['initial_value'] = True
-
-        if self.log_steps == True:
-            self.populate_possible_values(puzzle)
-            self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
         
         return puzzle
 
@@ -53,7 +49,9 @@ class SudokuSolver:
     
     def record_step(self, puzzle):
         self.populate_possible_values(puzzle)
-        self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+        # For unit testing, you can turn off the GUI generator, which add run time, and is a dependency not needed
+        if self.log_steps == True:
+            self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
 
     def solve_puzzle(self, puzzle):
         changesd_squares = 1
@@ -146,10 +144,7 @@ class SudokuSolver:
                             if only_x_axis_appearance or only_y_axis_appearance:
                                 found_axis_requirement = True
                                 puzzle.set_square(x, y, possible_value)
-
-                                if self.log_steps == True:
-                                    self.populate_possible_values(puzzle)
-                                    self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+                                self.record_step(puzzle)
                             else:
                                 only_box_appearance = True
                                 #Check the box
@@ -176,17 +171,18 @@ class SudokuSolver:
                                 if only_box_appearance:
                                     found_box_requirement = True
                                     puzzle.set_square(x, y, possible_value)
-
-                                    if self.log_steps == True:
-                                        self.populate_possible_values(puzzle)
-                                        self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+                                    self.record_step(puzzle)
                                         
         if found_axis_requirement or found_box_requirement:
             return 1
         else:
             return 0
 
-
+    # TODO Describe this mess
+    # Locked out possibilities is a techhique I've used that merges a few different sudoku tricks to find a value.
+    # For each square not solved, check each possible value and see if the other possibl3e values in that square must appear in a 
+    # different row or column out of line with this square due to limitations due to their home 3 x 3 box.
+    # If we can determine that the other possibilities 
     def analyze_squares(self, puzzle):
         for number_of_options in range(2, 9):
             for x in range(9):
@@ -370,9 +366,7 @@ class SudokuSolver:
             self.display_puzzle_to_console(puzzle)
         
         puzzle.set_square(x, y, value_to_set)
-        if self.log_steps == True:
-            self.populate_possible_values(puzzle)
-            self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
+        self.record_step(puzzle)
         
         puzzle.analysis_helped = True
 
@@ -392,10 +386,8 @@ class SudokuSolver:
 
             puzzle2.set_square(x, y, possible_value)
             puzzle2.squares[x][y]['is_guess'] = True
-            self.populate_possible_values(puzzle2)
-            
-            if self.log_steps == True:
-                self.steps.append(self.visualizer.generate_sudoku_render(puzzle2))
+            #self.populate_possible_values(puzzle2)
+            self.record_step(puzzle)
             
             skip_guess = False
             for xaxis in range(9):
@@ -429,16 +421,15 @@ class SudokuSolver:
             for y in range(9):
                 if len(puzzle.squares[x][y]['possible_values']) == 1:
                     puzzle.set_square(x, y, puzzle.squares[x][y]['possible_values'][0])
+                    self.record_step(puzzle)
                     promotions += 1
                     
                     # When we guess a value, the possible wrong value could result in invalid values here, so terminate this early.
                     # We need to prune invalid puzzles early.
                     if puzzle.guessing_used == True:
-                        return promotions
+                         return promotions
                     
-                    if self.log_steps == True:
-                        self.populate_possible_values(puzzle)
-                        self.steps.append(self.visualizer.generate_sudoku_render(puzzle))
                     #Should I return here?
+                    #return 1
 
         return promotions

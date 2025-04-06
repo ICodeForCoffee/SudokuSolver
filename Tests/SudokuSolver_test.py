@@ -4,7 +4,7 @@ import pytest
 
 def test_basic_solving():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     # The missing value here is 6.
     matrix = [
@@ -22,6 +22,7 @@ def test_basic_solving():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     assert puzzle.is_solved() == False
     puzzle = instance.solve_puzzle(puzzle)
@@ -43,10 +44,11 @@ def test_basic_solving():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
 def test_simple_solving():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     #This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
@@ -64,6 +66,7 @@ def test_simple_solving():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     
     assert puzzle.is_solved() == False
@@ -73,7 +76,7 @@ def test_simple_solving():
 
 def test_complex_solving_one():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     # This is the same Matrix from sudoku-puzzle6.txt
     matrix = [
@@ -91,6 +94,7 @@ def test_complex_solving_one():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     
     assert puzzle.is_solved() == False
@@ -99,7 +103,7 @@ def test_complex_solving_one():
 
 def test_complex_solving_two():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     # This is the same Matrix from sudoku-puzzle4.txt with two values filled in
     matrix = [
@@ -117,6 +121,7 @@ def test_complex_solving_two():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     
     assert puzzle.is_solved() == False
@@ -125,7 +130,7 @@ def test_complex_solving_two():
 
 def test_analysis_method():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     # This is the same Matrix from sudoku-puzzle4.txt with two values filled in
     matrix = [
@@ -143,6 +148,7 @@ def test_analysis_method():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     assert puzzle.is_solved() == False
     
@@ -161,7 +167,7 @@ def test_analysis_method():
 
 def test_load_function():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
     
@@ -188,7 +194,7 @@ def test_load_function():
 
 def test_load_function_initial_value():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
     
@@ -214,7 +220,7 @@ def test_load_function_initial_value():
     
 def test_guessing_function():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     # This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
@@ -232,6 +238,7 @@ def test_guessing_function():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     assert puzzle.is_solved() == False
     
@@ -244,7 +251,7 @@ def test_guessing_function():
     
 def test_populate_possible_values():
     puzzle = SudokuPuzzle()
-    instance = SudokuSolver()
+    instance = SudokuSolver(log_steps=False)
     
     # The missing value here is 6.
     matrix = [
@@ -262,6 +269,7 @@ def test_populate_possible_values():
     for x in range(9):
         for y in range(9):
             puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
     
     instance.populate_possible_values(puzzle)
     possible_value_array = puzzle.squares[3][4]['possible_values']
@@ -287,6 +295,7 @@ def test_populate_possible_values():
     for x in range(9):
         for y in range(9):
             puzzle2.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
 
     instance.populate_possible_values(puzzle2)
     possible_value_array = puzzle2.squares[3][4]['possible_values']
@@ -298,3 +307,30 @@ def test_populate_possible_values():
     expected_value_array = [1, 2, 4, 5]
     
     assert possible_value_array == expected_value_array
+    
+def test_logging_of_steps():
+    puzzle = SudokuPuzzle()
+    instance = SudokuSolver(log_steps=True)
+    
+    # The missing value here is 6.
+    matrix = [
+        [5, 3, 4, 6, 7, 8, 9, 1, 2],
+        [6, 7, 2, 1, 9, 5, 3, 4, 8],
+        [1, 9, 8, 3, 4, 2, 5, 6, 7],
+        [8, 5, 9, 7, ' ', 1, 4, 2, 3],
+        [4, 2, 6, 8, 5, 3, 7, 9, 1],
+        [7, 1, 3, 9, 2, 4, 8, 5, 6],
+        [9, 6, 1, 5, 3, 7, 2, 8, 4],
+        [2, 8, 7, 4, 1, 9, 6, 3, 5],
+        [3, 4, 5, 2, 8, 6, 1, 7, 9]
+    ]
+    
+    for x in range(9):
+        for y in range(9):
+            puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
+
+    assert puzzle.is_solved() == False
+    puzzle = instance.start_solving(puzzle)
+    assert puzzle.is_solved() == True
+    assert len(instance.steps) == 2
