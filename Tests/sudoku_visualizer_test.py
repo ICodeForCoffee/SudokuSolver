@@ -1,6 +1,6 @@
-from SudokuSolver import SudokuSolver
-from SudokuPuzzle import SudokuPuzzle
-from SudokuVisualizer import SudokuVisualizer
+from sudoku_solver import SudokuSolver
+from sudoku_puzzle import SudokuPuzzle
+from sudoku_visualizer import SudokuVisualizer
 import pytest
 
 def test_generate_possible_values_html():

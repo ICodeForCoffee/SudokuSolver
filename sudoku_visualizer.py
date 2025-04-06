@@ -1,5 +1,5 @@
 from nicegui import app, ui
-from SudokuPuzzle import SudokuPuzzle
+from sudoku_puzzle import SudokuPuzzle
 import copy
 import time
 

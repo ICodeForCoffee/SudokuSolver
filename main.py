@@ -1,5 +1,5 @@
-from SudokuSolver import SudokuSolver
-from SudokuVisualizer import SudokuVisualizer
+from sudoku_solver import SudokuSolver
+from sudoku_visualizer import SudokuVisualizer
 import argparse
 import time
 import copy

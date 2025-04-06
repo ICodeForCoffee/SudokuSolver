@@ -1,5 +1,5 @@
-from SudokuSolver import SudokuSolver
-from SudokuPuzzle import SudokuPuzzle
+from sudoku_solver import SudokuSolver
+from sudoku_puzzle import SudokuPuzzle
 import pytest
 
 def test_basic_solving():

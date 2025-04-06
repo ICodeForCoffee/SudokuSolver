@@ -1,5 +1,5 @@
-from SudokuPuzzle import SudokuPuzzle
-from SudokuVisualizer import SudokuVisualizer
+from sudoku_puzzle import SudokuPuzzle
+from sudoku_visualizer import SudokuVisualizer
 import copy
 
 class SudokuSolver:
