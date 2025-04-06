@@ -67,7 +67,6 @@ class SudokuSolver:
                 return puzzle
             
             changesd_squares = 0
-            #self.populate_possible_values(puzzle)
             changesd_squares = self.promote_solved_squares(puzzle)
             
             # Since changes squreas does promitions until he realizes the puzzle might not be solveable, check here again
@@ -80,15 +79,20 @@ class SudokuSolver:
                     return puzzle
             
             # Do more complex elimination if the easy options have been removed.
-            if changesd_squares == 0:
-                changesd_squares = self.analyze_squares(puzzle)
+            # if changesd_squares == 0:
+            #     changesd_squares = self.analyze_squares(puzzle)
+            #     if puzzle.is_solvable() == False:
+            #         return puzzle
 
             # Planning ideas
             if changesd_squares == 0:
-                changesd_squares = self.hidden_pairs(puzzle)
+                possible_elimination_miade = self.hidden_pairs(puzzle)
                 
-            if changesd_squares == 0:
-                changesd_squares = self.hidden_triples(puzzle)
+                if not possible_elimination_miade:
+                    changesd_squares = self.hidden_triples(puzzle)
+                    
+                #How is this changing the results if nothing has been removed?
+                changesd_squares = self.promote_solved_squares(puzzle)
 
         if not puzzle.is_solved():
             puzzle = self.guess_a_value(puzzle)
@@ -161,6 +165,7 @@ class SudokuSolver:
                                 found_axis_requirement = True
                                 puzzle.set_square(x, y, possible_value)
                                 self.record_step(puzzle)
+                                return 1
                             else:
                                 only_box_appearance = True
                                 #Check the box
@@ -188,11 +193,9 @@ class SudokuSolver:
                                     found_box_requirement = True
                                     puzzle.set_square(x, y, possible_value)
                                     self.record_step(puzzle)
-                                        
-        if found_axis_requirement or found_box_requirement:
-            return 1
-        else:
-            return 0
+                                    return 1
+        
+        return 0
 
     # TODO Describe this mess
     # Locked out possibilities is a techhique I've used that merges a few different sudoku tricks to find a value.
