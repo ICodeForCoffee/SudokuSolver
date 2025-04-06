@@ -240,3 +240,61 @@ def test_guessing_function():
     instance.populate_possible_values(puzzle)
     puzzle = instance.guess_a_value(puzzle)
     assert puzzle.is_solved() == True
+    
+    
+def test_populate_possible_values():
+    puzzle = SudokuPuzzle()
+    instance = SudokuSolver()
+    
+    # The missing value here is 6.
+    matrix = [
+        [5, 3, 4, 6, 7, 8, 9, 1, 2],
+        [6, 7, 2, 1, 9, 5, 3, 4, 8],
+        [1, 9, 8, 3, 4, 2, 5, 6, 7],
+        [8, 5, 9, 7, ' ', 1, 4, 2, 3],
+        [4, 2, 6, 8, 5, 3, 7, 9, 1],
+        [7, 1, 3, 9, 2, 4, 8, 5, 6],
+        [9, 6, 1, 5, 3, 7, 2, 8, 4],
+        [2, 8, 7, 4, 1, 9, 6, 3, 5],
+        [3, 4, 5, 2, 8, 6, 1, 7, 9]
+    ]
+    
+    for x in range(9):
+        for y in range(9):
+            puzzle.squares[x][y]['value'] = matrix[x][y]
+    
+    instance.populate_possible_values(puzzle)
+    possible_value_array = puzzle.squares[3][4]['possible_values']
+    expected_value_array = [6]
+    
+    assert possible_value_array == expected_value_array
+    
+    puzzle2 = SudokuPuzzle()
+    
+    # This is the same Matrix from sudoku-puzzle1.txt
+    matrix = [
+        [' ',' ',' ', 7 , 8 ,' ', 6 , 3 , 9 ],
+        [' ',' ',' ', 9 ,' ',' ', 7 , 5 , 2 ],
+        [ 7 ,' ',' ', 5 ,' ',' ', 8 , 1 , 4 ],
+        [' ', 7 ,' ',' ',' ', 5 , 1 ,' ',' '],
+        [' ', 8 ,' ', 6 , 9 ,' ',' ', 4 , 7 ],
+        [' ', 3 ,' ',' ', 2 , 7 ,' ',' ',' '],
+        [' ',' ', 7 ,' ',' ', 6 ,' ',' ', 1 ],
+        [' ',' ', 1 ,' ', 5 ,' ',' ', 7 ,' '],
+        [' ', 5 ,' ',' ', 7 ,' ', 4 ,' ', 6 ]
+    ]
+    
+    for x in range(9):
+        for y in range(9):
+            puzzle2.squares[x][y]['value'] = matrix[x][y]
+
+    instance.populate_possible_values(puzzle2)
+    possible_value_array = puzzle2.squares[3][4]['possible_values']
+    expected_value_array = [3, 4]
+    
+    assert possible_value_array == expected_value_array
+    
+    possible_value_array = puzzle2.squares[0][0]['possible_values']
+    expected_value_array = [1, 2, 4, 5]
+    
+    assert possible_value_array == expected_value_array
