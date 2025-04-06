@@ -88,15 +88,22 @@ class SudokuSolver:
 
             # Planning ideas
             if changesd_squares == 0:
-                
                 possible_elimination_made = self.hidden_pairs(puzzle)
-                
-                if not possible_elimination_made:
-                    possible_elimination_made = self.hidden_triples(puzzle)
-                    
-                #How is this changing the results if nothing has been removed?
+  
+                # Repeat what we did before
                 if possible_elimination_made:
-                    changesd_squares = self.promote_solved_squares(puzzle)
+                    changesd_squares = self.naked_single(puzzle)
+                    
+                    if changesd_squares == 0:
+                        changesd_squares = self.hidden_single(puzzle)
+                        if puzzle.is_solvable() == False:
+                            return puzzle
+                    
+                    # Do more complex elimination if the easy options have been removed.
+                    if changesd_squares == 0:
+                        changesd_squares = self.locked_candidates(puzzle)
+                        if puzzle.is_solvable() == False:
+                            return puzzle
 
         if not puzzle.is_solved():
             puzzle = self.guess_a_value(puzzle)
@@ -378,21 +385,243 @@ class SudokuSolver:
         return False
     
     def hidden_pairs(self, puzzle):
-        for number_of_options in range(2, 9):
-            for x in range(9):
-                for y in range(9):
-                    if puzzle.squares[x][y]['value'] == " " and len(puzzle.squares[x][y]['possible_values']) == number_of_options:
-                        pass
-                        # change_made = self.perform_analysis(puzzle, x, y)
+        ###Removes possibilities with hidden pairs###
+        change_made = False
+        for x in range(9):
+            for y in range(9):
+                if puzzle.squares[x][y]['value'] == " " and len(puzzle.squares[x][y]['possible_values']) >= 2:
+                    for pair_of_possibilities in self.get_possible_pairs(puzzle.squares[x][y]['possible_values']):
+                    
+                        change_made = self.hidden_pairs_check(puzzle, x, y, pair_of_possibilities)
                         # if (change_made):
+                        #     print("Hidden pairs man!!!!")
                         #     return True
 
+        if (change_made):
+            return True
+        else:
+            return False
+    
+    def hidden_pairs_check(self, puzzle, x1, y1, pair_of_possibilities):
+        ###Does a possible pairs check###
+        pair_value1 = pair_of_possibilities[0]
+        pair_value2 = pair_of_possibilities[1]
+        
+        matrix_changed = False
+        #First, see if this pair occurs in another square in line or in our cube.
+
+        # Vertical check
+        for xaxis in range(9):
+            if xaxis != x1:
+                if puzzle.squares[xaxis][y1]['value'] == ' ':
+                    possible_values_in_square = puzzle.squares[xaxis][y1]['possible_values']
+                    if pair_of_possibilities[0] in possible_values_in_square and pair_of_possibilities[1] in possible_values_in_square:
+                        collision_found = False
+                        for xaxis2 in range(9):
+                            if xaxis2 != x1 and xaxis2 != xaxis and collision_found == False:
+                                possible_values_in_square_in_other_square = puzzle.squares[xaxis2][y1]['possible_values']
+                                if pair_value1 in possible_values_in_square_in_other_square or pair_value2 in possible_values_in_square_in_other_square:
+                                    collision_found = True
+                                    
+                        if not collision_found:
+                            self.mark_hidden_pairs(puzzle, x1, y1, xaxis, y1, pair_of_possibilities)
+                            return True
+
+        # Horizontal check
+        for yaxis in range(9):
+            if yaxis != y1:
+                if puzzle.squares[x1][yaxis]['value'] == ' ':
+                    possible_values_in_square = puzzle.squares[x1][yaxis]['possible_values']
+                    if pair_of_possibilities[0] in possible_values_in_square and pair_of_possibilities[1] in possible_values_in_square:
+                        collision_found = False
+                        for yaxis2 in range(9):
+                            if yaxis2 != y1 and yaxis2 != yaxis and collision_found == False:
+                                possible_values_in_square_in_other_square = puzzle.squares[x1][yaxis2]['possible_values']
+                                if pair_value1 in possible_values_in_square_in_other_square or pair_value2 in possible_values_in_square_in_other_square:
+                                    collision_found = True
+                                    
+                        if not collision_found:
+                            self.mark_hidden_pairs(puzzle, x1, y1, x1, yaxis, pair_of_possibilities)
+                            return True
+        
+        # possible_values = puzzle.squares[x][y]['possible_values']
+        # possible_pairs = self.get_possible_pairs(possible_values)
+        
+        # for possible_value in puzzle.squares[x][y]['possible_values']:
+        #     other_possible_values = copy.deepcopy(puzzle.squares[x][y]['possible_values'])
+        
         return False
     
-    def hidden_pairs_check_square(self, puzzle, x, y):
-        return False
+    def mark_hidden_pairs(self, puzzle, x1, y1, x2, y2, pair):
+        puzzle.squares[x1][y1]['possible_values'] = pair
+        puzzle.squares[x2][y2]['possible_values'] = pair
     
+    def get_possible_pairs(self, possible_values):
+        # TODO Changes this to a real math calculation instead of this mess
+        # In my defense, I'm trying to code the method using this first before I worry about the nitty gritty of making this code look pretty.
+        if len(possible_values) == 2:
+            sets = [[possible_values[0],possible_values[1]]]
+            return sets
+        
+        if len(possible_values) == 3:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[1],possible_values[2]]
+                
+                ]
+            return sets
+        
+        if len(possible_values) == 4:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[0],possible_values[3]],
+                [possible_values[1],possible_values[2]],
+                [possible_values[1],possible_values[3]],
+                [possible_values[2],possible_values[3]]
+            ]
+            return sets
+        
+        if len(possible_values) == 5:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[0],possible_values[3]],
+                [possible_values[0],possible_values[4]],
+                [possible_values[1],possible_values[2]],
+                [possible_values[1],possible_values[3]],
+                [possible_values[1],possible_values[4]],
+                [possible_values[2],possible_values[3]],
+                [possible_values[2],possible_values[4]],
+                [possible_values[3],possible_values[4]]
+            ]
+            return sets
+        
+        if len(possible_values) == 6:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[0],possible_values[3]],
+                [possible_values[0],possible_values[4]],
+                [possible_values[0],possible_values[5]],
+                [possible_values[1],possible_values[2]],
+                [possible_values[1],possible_values[3]],
+                [possible_values[1],possible_values[4]],
+                [possible_values[1],possible_values[5]],
+                [possible_values[2],possible_values[3]],
+                [possible_values[2],possible_values[4]],
+                [possible_values[2],possible_values[5]],
+                [possible_values[3],possible_values[4]],
+                [possible_values[3],possible_values[5]],
+                [possible_values[4],possible_values[5]]
+            ]
+            return sets
+    
+        if len(possible_values) == 7:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[0],possible_values[3]],
+                [possible_values[0],possible_values[4]],
+                [possible_values[0],possible_values[5]],
+                [possible_values[0],possible_values[6]],
+                [possible_values[1],possible_values[2]],
+                [possible_values[1],possible_values[3]],
+                [possible_values[1],possible_values[4]],
+                [possible_values[1],possible_values[5]],
+                [possible_values[1],possible_values[6]],
+                [possible_values[2],possible_values[3]],
+                [possible_values[2],possible_values[4]],
+                [possible_values[2],possible_values[5]],
+                [possible_values[2],possible_values[6]],
+                [possible_values[3],possible_values[4]],
+                [possible_values[3],possible_values[5]],
+                [possible_values[3],possible_values[6]],
+                [possible_values[4],possible_values[5]],
+                [possible_values[4],possible_values[6]],
+                [possible_values[5],possible_values[6]]
+            ]
+            return sets
+        
+        if len(possible_values) == 8:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[0],possible_values[3]],
+                [possible_values[0],possible_values[4]],
+                [possible_values[0],possible_values[5]],
+                [possible_values[0],possible_values[6]],
+                [possible_values[0],possible_values[7]],
+                [possible_values[1],possible_values[2]],
+                [possible_values[1],possible_values[3]],
+                [possible_values[1],possible_values[4]],
+                [possible_values[1],possible_values[5]],
+                [possible_values[1],possible_values[6]],
+                [possible_values[1],possible_values[7]],
+                [possible_values[2],possible_values[3]],
+                [possible_values[2],possible_values[4]],
+                [possible_values[2],possible_values[5]],
+                [possible_values[2],possible_values[6]],
+                [possible_values[2],possible_values[7]],
+                [possible_values[3],possible_values[4]],
+                [possible_values[3],possible_values[5]],
+                [possible_values[3],possible_values[6]],
+                [possible_values[3],possible_values[7]],
+                [possible_values[4],possible_values[5]],
+                [possible_values[4],possible_values[6]],
+                [possible_values[4],possible_values[7]],
+                [possible_values[5],possible_values[6]],
+                [possible_values[5],possible_values[7]],
+                [possible_values[6],possible_values[7]]
+            ]
+            return sets
+        
+        if len(possible_values) == 9:
+            sets = [
+                [possible_values[0],possible_values[1]],
+                [possible_values[0],possible_values[2]],
+                [possible_values[0],possible_values[3]],
+                [possible_values[0],possible_values[4]],
+                [possible_values[0],possible_values[5]],
+                [possible_values[0],possible_values[6]],
+                [possible_values[0],possible_values[7]],
+                [possible_values[0],possible_values[8]],
+                [possible_values[1],possible_values[2]],
+                [possible_values[1],possible_values[3]],
+                [possible_values[1],possible_values[4]],
+                [possible_values[1],possible_values[5]],
+                [possible_values[1],possible_values[6]],
+                [possible_values[1],possible_values[7]],
+                [possible_values[1],possible_values[8]],
+                [possible_values[2],possible_values[3]],
+                [possible_values[2],possible_values[4]],
+                [possible_values[2],possible_values[5]],
+                [possible_values[2],possible_values[6]],
+                [possible_values[2],possible_values[7]],
+                [possible_values[2],possible_values[8]],
+                [possible_values[3],possible_values[4]],
+                [possible_values[3],possible_values[5]],
+                [possible_values[3],possible_values[6]],
+                [possible_values[3],possible_values[7]],
+                [possible_values[3],possible_values[8]],
+                [possible_values[4],possible_values[5]],
+                [possible_values[4],possible_values[6]],
+                [possible_values[4],possible_values[7]],
+                [possible_values[4],possible_values[8]],
+                [possible_values[5],possible_values[6]],
+                [possible_values[5],possible_values[7]],
+                [possible_values[5],possible_values[8]],
+                [possible_values[6],possible_values[7]],
+                [possible_values[6],possible_values[8]],
+                [possible_values[7],possible_values[8]]
+            ]
+            return sets
+    
+        return [[]]
+
     def hidden_triples(self, puzzle):
+        # TODO implement later
         return False
 
     def locked_candidates_set_value(self, puzzle, x, y, value_to_set):

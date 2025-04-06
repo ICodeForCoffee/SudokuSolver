@@ -359,3 +359,55 @@ def test_is_solvable():
             puzzle.squares[x][y]['initial_value'] = False
     
     instance.populate_possible_values(puzzle)
+    
+def test_get_possible_pairs():
+    instance = SudokuSolver(log_gui_display=True)
+    
+    possible_pairs = [3, 5, 7]
+    results = instance.get_possible_pairs(possible_pairs)
+    
+    assert [3, 5] in results
+    assert [3, 7] in results
+    assert [5, 7] in results
+    
+    possible_pairs = [1, 3, 4, 5, 7, 9]
+    results = instance.get_possible_pairs(possible_pairs)
+    
+    assert [4, 9] in results
+    assert [1, 7] in results
+    assert [5, 7] in results
+
+def test_hidden_pairs_check():
+    puzzle = SudokuPuzzle()
+    instance = SudokuSolver(log_gui_display=True)
+
+    matrix = [
+        [' ', 4 , 9 , 1 , 3 , 2 ,' ',' ',' '],
+        [' ', 8 , 1 , 4 , 7 , 9 ,' ',' ',' '],
+        [ 3 , 2 , 7 , 6 , 8 , 5 , 9 , 1 , 4 ],
+        [' ', 9 , 6 ,' ', 5 , 1 , 8 ,' ',' '],
+        [' ', 7 , 5 ,' ', 2 , 8 ,' ',' ',' '],
+        [' ', 3 , 8 ,' ', 4 , 6 ,' ',' ', 5 ],
+        [ 8 , 5 , 3 , 2 , 6 , 7 ,' ',' ',' '],
+        [ 7 , 1 , 2 , 8 , 9 , 4 , 5 , 6 , 3 ],
+        [ 9 , 6 , 4 , 5 , 1 , 3 ,' ',' ',' ']
+    ]
+    
+    for x in range(9):
+        for y in range(9):
+            puzzle.squares[x][y]['value'] = matrix[x][y]
+            puzzle.squares[x][y]['initial_value'] = False
+    
+    instance.populate_possible_values(puzzle)
+    
+    possibilities = [1, 9]
+    current_list_in_square = [1, 6, 9]
+    
+    assert puzzle.squares[4][8]['possible_values'] == current_list_in_square
+    assert puzzle.squares[6][8]['possible_values'] == possibilities
+    
+    result = instance.hidden_pairs_check(puzzle, 4, 8, possibilities)
+    
+    assert result == True
+    assert puzzle.squares[4][8]['possible_values'] == possibilities
+    assert puzzle.squares[6][8]['possible_values'] == possibilities
