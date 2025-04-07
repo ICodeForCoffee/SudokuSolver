@@ -11,11 +11,11 @@ Solves Suddoku. This project has a main() file, two class files, and multiple te
 
 This application includes unit tests in
 
-- sudoku_puzzle_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/sudoku_puzzle_test.py)
-- sudoku_solver_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/sudoku_solver_test.py)
-- sudoku_visualizer_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/sudoku_visualizer_test.py)
+- sudoku_puzzle_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/Tests/blob/main/sudoku_puzzle_test.py)
+- sudoku_solver_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/Tests/blob/main/sudoku_solver_test.py)
+- sudoku_visualizer_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/Tests/blob/main/sudoku_visualizer_test.py)
 
-Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/tree/main/SudokuPuzzles).
+Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/Puzzle/tree/main/SudokuPuzzles).
 
 To call the application use `python sudoku.py -file PUZZLE_TO_SOLVE`. Debugging messages can be turned off with `-O`.
 
