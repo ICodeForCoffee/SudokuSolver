@@ -15,7 +15,7 @@ This application includes unit tests in
 - sudoku_solver_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/Tests/sudoku_solver_test.py)
 - sudoku_visualizer_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/Tests/sudoku_visualizer_test.py)
 
-Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/tree/main/Puzzles/SudokuPuzzles).
+Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/tree/main/Puzzles).
 
 To call the application use `python sudoku.py -file PUZZLE_TO_SOLVE`. Debugging messages can be turned off with `-O`.
 
