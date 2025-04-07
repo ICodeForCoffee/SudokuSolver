@@ -3,7 +3,7 @@ from sudoku_visualizer import SudokuVisualizer
 import copy
 
 class SudokuSolver:
-    def __init__(self, log_gui_display=True, verbose_flag=False, hide_possible_values_flag=True):
+    def __init__(self, log_gui_display=True, verbose_flag=False, hide_possible_values_flag=False):
         self.log_gui_display = log_gui_display
         self.hide_possible_values_flag = hide_possible_values_flag
         self.verbose_flag = verbose_flag

@@ -10,11 +10,11 @@ Puzzles for the application are [located in a folder](https://github.com/ICodeFo
 
 The code also supports a number of flags. By default the program runs in the console, but it supports a graphical mode using NiceGUI.
 
-- `-file`/`-f` - Specifies the file to display
-- `-display``-d` - Turn on the visualizer using a web browser.
-- `-native`/`-n` - Turn on the visualizer in native window mode. The application still runs a web server to do this.
-- `-np` - Turns off possible values in the visualizer. Has no affect in console mode.
-- `-verbose`/`-v` - Displays lots of debugging messages to the console. Will not do anything if you turned off debugging in python with `-O`.
+- `-f`/`--file` - Specifies the file to display
+- `-d`/`--display` - Turn on the visualizer using a web browser.
+- `-n`/`--native` - Turn on the visualizer in native window mode. The application still runs a web server to do this.
+- `--hide` - Turns off possible values in the visualizer. Has no affect in console mode.
+- `-v`/`--verbose` - Displays lots of debugging messages to the console. Will not do anything if you turned off debugging in python with `-O`.
 
 ## File Breakdown
 

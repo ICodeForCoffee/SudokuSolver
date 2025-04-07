@@ -11,11 +11,11 @@ verbose = False
 def main():
     parser = argparse.ArgumentParser(prog="Sudoku Solver", description="Solves a sudoku problem.")
     #File is the only required arguement.
-    parser.add_argument("-file", "--file", help="Sudoku problem to solve.", required=True, type=str)
-    parser.add_argument("-display", "--display", help="Turn on the visualizer.", action="store_true", required=False)
-    parser.add_argument("-native", "--native", help="Turn on the visualizer in native window mode.", action="store_true", required=False)
-    parser.add_argument("-np", "--no_possibilities", help="Turns off possible values in the visualizer.", action="store_true", required=False)
-    parser.add_argument("-verbose", "--verbose", help="Display all debug messages when debugging.", action="store_true", required=False)
+    parser.add_argument("-f", "--file", help="sudoku problem to solve", required=True, type=str)
+    parser.add_argument("-d", "--display", help="turn on the visualizer", action="store_true", required=False)
+    parser.add_argument("-n", "--native", help="turn on the visualizer in native window mode", action="store_true", required=False)
+    parser.add_argument("--hide", help="turns off possible values in the visualizer", action="store_true", required=False)
+    parser.add_argument("-v", "--verbose", help="Display all debug messages when debugging.", action="store_true", required=False)
     args = parser.parse_args()
     
     #Store the flags.
@@ -28,7 +28,7 @@ def main():
     if args.native == True:
         display_flag = True
         display_native_flag = True
-    if args.no_possibilities == True:
+    if args.hide == True:
         hide_possible_values_flag = True
     if args.verbose == True:
         verbose_flag = True
