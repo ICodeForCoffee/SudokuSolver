@@ -149,6 +149,7 @@ class SudokuSolver:
                                     if int(puzzle.squares[xaxis][yaxis]['value']) in possible_values:
                                         possible_values.remove(int(puzzle.squares[xaxis][yaxis]['value']))
 
+                    #if len(puzzle.squares[x][y]['possible_values']) == 0 or len(puzzle.squares[x][y]['possible_values']) > len(possible_values):
                     puzzle.squares[x][y]['possible_values'] = possible_values
                 else:
                     puzzle.squares[x][y]['possible_values'] = []
@@ -445,6 +446,41 @@ class SudokuSolver:
                             return True
         
         # Box check
+        if 0 <= x1 <= 2:
+            xaxis_of_box = [0, 1, 2]
+        elif 3 <= x1 <= 5:
+            xaxis_of_box = [3, 4, 5]
+        else:
+            xaxis_of_box = [6, 7, 8]
+        
+        if 0 <= y1 <= 2:
+            yaxis_of_box = [0, 1, 2]
+        elif 3 <= y1 <= 5:
+            yaxis_of_box = [3, 4, 5]
+        else:
+            yaxis_of_box = [6, 7, 8]
+            
+        for xaxis in xaxis_of_box:
+            for yaxis in yaxis_of_box:
+                if xaxis != x1 and yaxis != x1:
+                    if puzzle.squares[xaxis][yaxis]['value'] == ' ':
+                        possible_values_in_square = puzzle.squares[xaxis][yaxis]['possible_values']
+                        box_1 = str(x1) + str(y1)
+                        box_2 = str(xaxis) + str(yaxis)
+                        if pair_of_possibilities[0] in possible_values_in_square and pair_of_possibilities[1] in possible_values_in_square:
+                            collision_found = False
+                            for xaxis2 in xaxis_of_box:
+                                for yaxis2 in yaxis_of_box:
+                                    box_checking = str(xaxis2) + str(yaxis2)
+                                    if box_1 != box_checking and box_2 != box_checking and collision_found == False:
+                                        possible_values_in_square_in_other_square = puzzle.squares[xaxis2][yaxis2]['possible_values']
+                                        if pair_value1 in possible_values_in_square_in_other_square or pair_value2 in possible_values_in_square_in_other_square:
+                                            collision_found = True
+                                            
+                            if not collision_found:
+                                self.mark_hidden_pairs(puzzle, x1, y1, xaxis, yaxis, pair_of_possibilities)
+                                print("Deep pairs find!!!")
+                                return True
         
         return False
     
