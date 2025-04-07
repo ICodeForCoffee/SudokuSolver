@@ -6,8 +6,7 @@ Solves Suddoku. This project has a main() file, two class files, and multiple te
 
 - main.py - main() - [View file.](https://github.com/ICodeForCoffee/Sudoku/blob/main/main.py)
 - sudoku_puzzle.py - Class that represents a Sudoku puzzle - [View file.](https://github.com/ICodeForCoffee/Sudoku/blob/main/sudoku_puzzle.py)
-- sudoku_solver.py - Class with logic for solving a Sudoku puzzle - [View file.](https://github.com/ICodeForCoffee/
-Sudoku/blob/main/sudoku_solver.py)
+- sudoku_solver.py - Class with logic for solving a Sudoku puzzle - [View file.](https://github.com/ICodeForCoffee/Sudoku/blob/main/sudoku_solver.py)
 - sudoku_visualizer.py - GUI launcher and logic - [View file.](https://github.com/ICodeForCoffee/Sudoku/blob/main/sudoku_visualizer.py)
 
 This application includes unit tests in
