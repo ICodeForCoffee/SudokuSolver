@@ -149,8 +149,13 @@ class SudokuSolver:
                                     if int(puzzle.squares[xaxis][yaxis]['value']) in possible_values:
                                         possible_values.remove(int(puzzle.squares[xaxis][yaxis]['value']))
 
-                    #if len(puzzle.squares[x][y]['possible_values']) == 0 or len(puzzle.squares[x][y]['possible_values']) > len(possible_values):
-                    puzzle.squares[x][y]['possible_values'] = possible_values
+                    if puzzle.squares[x][y]['possible_values'] == []:
+                        puzzle.squares[x][y]['possible_values'] = possible_values
+                    else:
+                        # Since hidden pairs can trim possible values, find the intersection of the current list and the new list
+                        current_possible_values = puzzle.squares[x][y]['possible_values'] 
+                        intersection_list = list(set(possible_values) & set(current_possible_values))
+                        puzzle.squares[x][y]['possible_values'] = intersection_list
                 else:
                     puzzle.squares[x][y]['possible_values'] = []
 
