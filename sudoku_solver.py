@@ -62,8 +62,10 @@ class SudokuSolver:
         ###Solves a Sudoku puzzle.###
         self.populate_possible_values(puzzle)
         
-        changesd_squares = 1
-        while changesd_squares > 0:
+        changesd_squares = 0
+        continue_to_loop = True
+        while continue_to_loop == True:
+            continue_to_loop = False
             # If this puzzle is not solveable any more, return
             if puzzle.is_solvable() == False:
                 return puzzle
@@ -86,24 +88,13 @@ class SudokuSolver:
                 if puzzle.is_solvable() == False:
                     return puzzle
 
-            # Planning ideas
+            if changesd_squares > 0 and puzzle.is_solvable():
+                continue_to_loop = True
             if changesd_squares == 0:
-                possible_elimination_made = self.hidden_pairs(puzzle)
-  
-                # Repeat what we did before
-                if possible_elimination_made:
-                    changesd_squares = self.naked_single(puzzle)
-                    
-                    if changesd_squares == 0:
-                        changesd_squares = self.hidden_single(puzzle)
-                        if puzzle.is_solvable() == False:
-                            return puzzle
-                    
-                    # Do more complex elimination if the easy options have been removed.
-                    if changesd_squares == 0:
-                        changesd_squares = self.locked_candidates(puzzle)
-                        if puzzle.is_solvable() == False:
-                            return puzzle
+                hidden_pairs_elimination = self.hidden_pairs(puzzle)
+                
+                if hidden_pairs_elimination and puzzle.is_solvable():
+                    continue_to_loop = True
 
         if not puzzle.is_solved():
             puzzle = self.guess_a_value(puzzle)
@@ -428,8 +419,8 @@ class SudokuSolver:
                                 possible_values_in_square_in_other_square = puzzle.squares[xaxis2][y1]['possible_values']
                                 if pair_value1 in possible_values_in_square_in_other_square or pair_value2 in possible_values_in_square_in_other_square:
                                     collision_found = True
-                                    
-                        if not collision_found:
+                        
+                        if (puzzle.squares[x1][y1]['possible_values'] != pair_of_possibilities or puzzle.squares[xaxis][y1]['possible_values'] != pair_of_possibilities) and not collision_found:
                             self.mark_hidden_pairs(puzzle, x1, y1, xaxis, y1, pair_of_possibilities)
                             return True
 
@@ -446,7 +437,7 @@ class SudokuSolver:
                                 if pair_value1 in possible_values_in_square_in_other_square or pair_value2 in possible_values_in_square_in_other_square:
                                     collision_found = True
                                     
-                        if not collision_found:
+                        if (puzzle.squares[x1][y1]['possible_values'] != pair_of_possibilities or puzzle.squares[x1][yaxis]['possible_values'] != pair_of_possibilities) and not collision_found:
                             self.mark_hidden_pairs(puzzle, x1, y1, x1, yaxis, pair_of_possibilities)
                             return True
         
@@ -482,9 +473,8 @@ class SudokuSolver:
                                         if pair_value1 in possible_values_in_square_in_other_square or pair_value2 in possible_values_in_square_in_other_square:
                                             collision_found = True
                                             
-                            if not collision_found:
+                            if (puzzle.squares[x1][y1]['possible_values'] != pair_of_possibilities or puzzle.squares[xaxis][yaxis]['possible_values'] != pair_of_possibilities) and not collision_found:
                                 self.mark_hidden_pairs(puzzle, x1, y1, xaxis, yaxis, pair_of_possibilities)
-                                print("Deep pairs find!!!")
                                 return True
         
         return False
