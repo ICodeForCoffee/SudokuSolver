@@ -12,10 +12,10 @@ def main():
     parser = argparse.ArgumentParser(prog="Sudoku Solver", description="Solves a sudoku problem.")
     #File is the only required arguement.
     parser.add_argument("-file", "--file", help="Sudoku problem to solve.", required=True, type=str)
-    parser.add_argument("-d", "--display", help="Turn on the visualizer.", action="store_true", required=False)
-    parser.add_argument("-n", "--native", help="Turn on the visualizer in native window mode.", action="store_true", required=False)
+    parser.add_argument("-display", "--display", help="Turn on the visualizer.", action="store_true", required=False)
+    parser.add_argument("-native", "--native", help="Turn on the visualizer in native window mode.", action="store_true", required=False)
     parser.add_argument("-np", "--no_possibilities", help="Turns off possible values in the visualizer.", action="store_true", required=False)
-    parser.add_argument("-v", "--verbose", help="Display all debug messages when debugging.", action="store_true", required=False)
+    parser.add_argument("-verbose", "--verbose", help="Display all debug messages when debugging.", action="store_true", required=False)
     args = parser.parse_args()
     
     #Store the flags.
