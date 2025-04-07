@@ -217,8 +217,9 @@ SUDOKU_CONTAINER = """
 """
 
 class SudokuVisualizer:
-    def __init__(self):
-        # TODO Should all the HTML and styling be declared in init?
+    def __init__(self, display_native=False, hide_possible_values_flag=False):
+        self.display_native = display_native
+        self.hide_possible_values_flag = hide_possible_values_flag
         pass
 
     def generate_possible_values_html(self, possible_values):
@@ -235,6 +236,9 @@ class SudokuVisualizer:
 
     def generate_sudoku_render(self, puzzle, show_possibilities=True):
         sudoku_rendering = copy.deepcopy(SUDOKU_CONTAINER)
+        
+        if self.hide_possible_values_flag:
+            show_possibilities = False
         
         for x in range(9):
             for y in range(9):
@@ -292,6 +296,11 @@ class SudokuVisualizer:
         
     @ui.refreshable
     def render_gui(self, steps):
+        if (self.display_native):
+            app.native.window_args['resizable'] = True
+            app.native.start_args['debug'] = True
+            app.native.settings['ALLOW_DOWNLOADS'] = True
+        
         ui.html(STYLE)
         ui.page_title = "Sudoku"
         
@@ -316,10 +325,11 @@ class SudokuVisualizer:
             ui.button('Show Solution', on_click=lambda: container.set_content(get_last_step(steps)))
             ui.button('Reset', on_click=lambda: container.set_content(reset_puzzle(steps)))
        
-        #So I have to do more reading here. Reload means it doesn't solve the puzzle twice, but then none of my buttson work. 
-        #ui.run()
-        ui.run(native=True, window_size=(795, 885), fullscreen=False)
-        #ui.run(reload=False)
+        # The native window mode is not as suited for presentations.
+        if (self.display_native):
+            ui.run(native=True, window_size=(795, 885), fullscreen=False)
+        else:
+            ui.run()
                 
         
         def get_next_step(steps):

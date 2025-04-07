@@ -9,35 +9,41 @@ hide = False
 verbose = False
 
 def main():
-    parser = argparse.ArgumentParser(prog="Sudoku Solver", description="Sudoku Solver")
-    parser.add_argument("-file", help="Sudoku problem to solve", required=True, type=str)
-    parser.add_argument("-d", "--display", help="Turn on the visualizer", action="store_true", required=False)
-    parser.add_argument("-np", help="Turns off possible values in the visualizer", action="store_true", required=False)
-    parser.add_argument("-v", "--verbose", help="Display all debug code", action="store_true", required=False)
+    parser = argparse.ArgumentParser(prog="Sudoku Solver", description="Solves a sudoku problem.")
+    #File is the only required arguement.
+    parser.add_argument("-file", "--file", help="Sudoku problem to solve.", required=True, type=str)
+    parser.add_argument("-d", "--display", help="Turn on the visualizer.", action="store_true", required=False)
+    parser.add_argument("-n", "--native", help="Turn on the visualizer in native window mode.", action="store_true", required=False)
+    parser.add_argument("-np", "--no_possibilities", help="Turns off possible values in the visualizer.", action="store_true", required=False)
+    parser.add_argument("-v", "--verbose", help="Display all debug messages when debugging.", action="store_true", required=False)
     args = parser.parse_args()
     
     #Store the flags.
     display_flag = False
+    display_native_flag = False
     hide_possible_values_flag = False
     verbose_flag = False
     if args.display == True:
         display_flag = True
-    if args.np == True:
+    if args.native == True:
+        display_flag = True
+        display_native_flag = True
+    if args.no_possibilities == True:
         hide_possible_values_flag = True
     if args.verbose == True:
         verbose_flag = True
 
-    instance = SudokuSolver(log_gui_display=True)
+    instance = SudokuSolver(log_gui_display=display_flag, hide_possible_values_flag=hide_possible_values_flag)
     puzzle = instance.load_puzzle(args.file)
 
     if display_flag == True:
-        run_display_mode(puzzle, hide_possible_values_flag)
+        run_display_mode(puzzle, display_native_flag, hide_possible_values_flag)
     else:
         run_console_mode(puzzle, verbose_flag)
 
 def run_console_mode(puzzle, verbose_flag):
-    instance = SudokuSolver(log_gui_display=False)
-        
+    instance = SudokuSolver(log_gui_display=False, verbose_flag=verbose_flag)
+    
     print("Initial puzzle\n")
     instance.display_puzzle_to_console(puzzle)
     
@@ -49,7 +55,7 @@ def run_console_mode(puzzle, verbose_flag):
     instance.display_puzzle_to_console(puzzle)
     
     print(f"This puzzle is {"solved" if puzzle.is_solved() == True else "unsolved"}")
-    if __debug__:
+    if __debug__ and verbose:
         if puzzle.guessing_used == True or puzzle.locked_candidates_helped == True:
             print()
         if puzzle.guessing_used == True:
@@ -62,10 +68,9 @@ def run_console_mode(puzzle, verbose_flag):
     print(f"The solution took {len(instance.steps)} steps.")
     print()
 
-def run_display_mode(puzzle, hide_possible_values_flag):
+def run_display_mode(puzzle, display_native_flag, hide_possible_values_flag):
     instance = SudokuSolver(log_gui_display=True)
-    visualizer = SudokuVisualizer()
-    print("Run the display")
+    visualizer = SudokuVisualizer(display_native_flag, hide_possible_values_flag)
     instance.populate_possible_values(puzzle)
     puzzle = instance.start_solving(puzzle)
     visualizer.render_gui(instance.steps)

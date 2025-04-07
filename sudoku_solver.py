@@ -3,11 +3,13 @@ from sudoku_visualizer import SudokuVisualizer
 import copy
 
 class SudokuSolver:
-    def __init__(self, log_gui_display=True):
+    def __init__(self, log_gui_display=True, verbose_flag=False, hide_possible_values_flag=True):
         self.log_gui_display = log_gui_display
+        self.hide_possible_values_flag = hide_possible_values_flag
+        self.verbose_flag = verbose_flag
         self.steps = []
         if log_gui_display:
-            self.visualizer = SudokuVisualizer()
+            self.visualizer = SudokuVisualizer(hide_possible_values_flag=hide_possible_values_flag)
 
     def load_puzzle(self, file_name):
         ###Loads a puzzle.###
@@ -480,13 +482,17 @@ class SudokuSolver:
         return False
     
     def mark_hidden_pairs(self, puzzle, x1, y1, x2, y2, pair):
+        ###Set hidden pairs values.###
+        if __debug__ and self.verbose_flag:
+            print(f"Hidden pairs set the possibilities as {pair[0]}, {pair[1]} on the squares [{x1}, {y1}] and [{x2}, {y2}]")
+            print()
+            self.display_puzzle_to_console(puzzle)
+        
         puzzle.squares[x1][y1]['possible_values'] = pair
         puzzle.squares[x2][y2]['possible_values'] = pair
     
     def get_possible_pairs(self, possible_values):
-        # TODO Changes this to a real math calculation instead of this mess
-        # In my defense, I'm trying to code the method using this first before I worry about the nitty gritty of making this code look pretty.
-        
+        ###Gets the possible pairs out of the list of possible values.###
         sets = []
         
         if len(possible_values) >= 2:
@@ -497,13 +503,9 @@ class SudokuSolver:
                         
         return sets
 
-    def hidden_triples(self, puzzle):
-        # TODO implement later
-        return False
-
     def locked_candidates_set_value(self, puzzle, x, y, value_to_set):
-        if __debug__:
-            print(f"Analysis calculated the value at [{x}, {y}] to be {value_to_set}") #added for debugging.
+        if __debug__ and self.verbose_flag:
+            print(f"Analysis calculated the value at [{x}, {y}] to be {value_to_set}")
             print()
             self.display_puzzle_to_console(puzzle)
         
@@ -519,8 +521,8 @@ class SudokuSolver:
         x, y = self.pick_a_square_to_guess(unmodified_puzzle)
 
         for possible_value in unmodified_puzzle.squares[x][y]['possible_values']:
-            if __debug__:
-                print(f"Guessing a value at [{x}, {y}] with the value {possible_value}") #added for debugging.
+            if __debug__ and self.verbose_flag:
+                print(f"Guessing a value at [{x}, {y}] with the value {possible_value}")
                 print()
                 self.display_puzzle_to_console(unmodified_puzzle)
                 

@@ -2,6 +2,20 @@
 
 Solves Suddoku. This project has a main() file, two class files, and multiple test files you can run through the application.
 
+## Usage
+
+To call the application use `python sudoku.py -file PUZZLE_TO_SOLVE`.
+
+Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/tree/main/Puzzles).
+
+The code also supports a number of flags. By default the program runs in the console, but it supports a graphical mode using NiceGUI.
+
+- -file/-f - Specifies the file to display
+- -d - Turn on the visualizer using a web browser.
+- -n - Turn on the visualizer in native window mode. The application still runs a web server to do this.
+- '-np' - Turns off possible values in the visualizer. Has no affect in console mode.
+- '-v' - Displays lots of debugging messages to the console. Will not do anything if you turned off debugging with `-O`.
+
 ## File Breakdown
 
 - main.py - main() - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/main.py)
@@ -14,10 +28,6 @@ This application includes unit tests in
 - sudoku_puzzle_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/Tests/sudoku_puzzle_test.py)
 - sudoku_solver_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/Tests/sudoku_solver_test.py)
 - sudoku_visualizer_test.py - [View file.](https://github.com/ICodeForCoffee/SudokuSolver/blob/main/Tests/sudoku_visualizer_test.py)
-
-Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/tree/main/Puzzles).
-
-To call the application use `python sudoku.py -file PUZZLE_TO_SOLVE`. Debugging messages can be turned off with `-O`.
 
 ## GUI Example
 
