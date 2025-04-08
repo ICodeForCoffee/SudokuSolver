@@ -1,10 +1,10 @@
 # Sudoku Solver
 
-Solves Suddoku. This project has a main() file, two class files, and multiple test files you can run through the application.
+Solves Sudoku. This project has a main() file, two class files, and multiple test files you can run through the application.
 
 ## Usage
 
-To call the application use `python sudoku.py -file PUZZLE_TO_SOLVE`.
+To call the application use `python sudoku.py --file PUZZLE_TO_SOLVE`.
 
 Puzzles for the application are [located in a folder](https://github.com/ICodeForCoffee/SudokuSolver/tree/main/Puzzles).
 
