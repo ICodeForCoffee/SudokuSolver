@@ -33,7 +33,8 @@ def main():
     if args.verbose == True:
         verbose_flag = True
 
-    instance = SudokuSolver(log_gui_display=display_flag, hide_possible_values_flag=hide_possible_values_flag)
+    # Load a puzzle
+    instance = SudokuSolver(log_gui_display=False)
     puzzle = instance.load_puzzle(args.file)
 
     if display_flag == True:
@@ -69,7 +70,7 @@ def run_console_mode(puzzle, verbose_flag):
     print()
 
 def run_display_mode(puzzle, display_native_flag, hide_possible_values_flag):
-    instance = SudokuSolver(log_gui_display=True)
+    instance = SudokuSolver(log_gui_display=True, hide_possible_values_flag=hide_possible_values_flag)
     visualizer = SudokuVisualizer(display_native_flag, hide_possible_values_flag)
     instance.populate_possible_values(puzzle)
     puzzle = instance.start_solving(puzzle)
