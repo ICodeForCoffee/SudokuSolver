@@ -283,11 +283,11 @@ class SudokuVisualizer:
         app.native.start_args['debug'] = True
         app.native.settings['ALLOW_DOWNLOADS'] = True
         
-        ui.html(STYLE)
+        ui.html(STYLE, sanitize=False)
         ui.label('Hello NiceGUI!')
         
         sudoku_rendering = self.generate_sudoku_render(puzzle)
-        ui.html(sudoku_rendering)
+        ui.html(sudoku_rendering, sanitize=False)
         
         ui.button('Solve Puzzle', on_click=lambda: ui.notify('button was pressed'))
         
@@ -301,10 +301,10 @@ class SudokuVisualizer:
             app.native.start_args['debug'] = True
             app.native.settings['ALLOW_DOWNLOADS'] = True
         
-        ui.html(STYLE)
+        ui.html(STYLE, sanitize=False)
         ui.page_title = "Sudoku"
         
-        container = ui.html()
+        container = ui.html(sanitize=False)
         
         global timer
         timer = ui.timer(1.0, lambda: container.set_content(get_next_step(steps)), active=False)
