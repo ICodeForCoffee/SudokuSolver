@@ -1,2 +1,2 @@
-nicegui==3.5.0
+nicegui==3.7.0
 pytest==8.4.2
