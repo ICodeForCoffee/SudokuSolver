@@ -18,7 +18,12 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": ["--file", ".\\Puzzles\\sudoku-puzzle7.txt"]
+            "windows": {
+                "args": ["--file", ".\\Puzzles\\sudoku-puzzle7.txt"]
+            },
+            "linux": {
+                "args": ["--file", "./Puzzles/sudoku-puzzle7.txt"]
+            }
         },
         {
             "name": "Python Debugger: Sudoku Display",
@@ -26,7 +31,12 @@
             "request": "launch",
             "program": "main.py",
             "console": "integratedTerminal",
-            "args": ["-d", "--file", ".\\Puzzles\\sudoku-puzzle7.txt"]
+            "windows": {
+                "args": ["-d", "--file", ".\\Puzzles\\sudoku-puzzle7.txt"]
+            },
+            "linux": {
+                "args": ["-d", "--file", "./Puzzles/sudoku-puzzle7.txt"]
+            }
         }
     ]
 }

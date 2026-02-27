@@ -1,6 +1,7 @@
 from sudoku_solver import SudokuSolver
 from sudoku_puzzle import SudokuPuzzle
 import pytest
+import os
 
 def test_basic_solving():
     puzzle = SudokuPuzzle()
@@ -170,7 +171,8 @@ def test_load_function():
     puzzle = SudokuPuzzle()
     instance = SudokuSolver(log_gui_display=False)
     
-    puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
+    path_dir: str = os.path.join("Puzzles", "sudoku-puzzle1.txt")
+    puzzle = instance.load_puzzle(path_dir)
     
     # This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
@@ -197,7 +199,8 @@ def test_load_function_initial_value():
     puzzle = SudokuPuzzle()
     instance = SudokuSolver(log_gui_display=False)
     
-    puzzle = instance.load_puzzle("Puzzles\\sudoku-puzzle1.txt")
+    path_dir: str = os.path.join("Puzzles", "sudoku-puzzle1.txt")
+    puzzle = instance.load_puzzle(path_dir)
     
     # This is the same Matrix from sudoku-puzzle1.txt
     matrix = [
